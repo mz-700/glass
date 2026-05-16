@@ -16,7 +16,7 @@ public class Cpir extends InstructionFactory {
 
 	public static class Cpir_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Cpir_(Scope context) {
 			super(context);

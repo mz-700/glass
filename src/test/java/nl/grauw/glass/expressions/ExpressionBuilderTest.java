@@ -45,16 +45,12 @@ public class ExpressionBuilderTest extends TestBase {
 
 	@Test
 	public void testGrouping3() {
-		assertExpressionError(0, 1, 27, () -> {
-			parse("10H + (15H * (5H - 2H) + 4H");
-		});
+		assertExpressionError(0, 1, 27, () -> parse( "10H + (15H * (5H - 2H) + 4H" ) );
 	}
 
 	@Test
 	public void testGrouping4() {
-		assertExpressionError(0, 1, 21, () -> {
-			parse("10H + 15H * (5H - 2H)) + 4H");
-		});
+		assertExpressionError(0, 1, 21, () -> parse( "10H + 15H * (5H - 2H)) + 4H" ) );
 	}
 
 	@Test
@@ -110,16 +106,12 @@ public class ExpressionBuilderTest extends TestBase {
 
 	@Test
 	public void testTernaryIfWithoutElse() {
-		assertExpressionError(0, 1, 6, () -> {
-			parse("a ? 1H");
-		});
+		assertExpressionError(0, 1, 6, () -> parse( "a ? 1H" ) );
 	}
 
 	@Test
 	public void testTernaryElseWithoutIf() {
-		assertExpressionError(0, 1, 5, () -> {
-			parse("a : b");
-		});
+		assertExpressionError(0, 1, 5, () -> parse( "a : b" ) );
 	}
 
 	@Test
@@ -134,9 +126,7 @@ public class ExpressionBuilderTest extends TestBase {
 
 	@Test
 	public void testTernaryIfElseLowerPrecedenceNegative() {
-		assertExpressionError(0, 1, 6, () -> {
-			parse("a ? 1H, 2H : 3H");
-		});
+		assertExpressionError(0, 1, 6, () -> parse( "a ? 1H, 2H : 3H" ) );
 	}
 
 	@Test
@@ -216,44 +206,32 @@ public class ExpressionBuilderTest extends TestBase {
 
 	@Test
 	public void testAnnotationInTheMiddle() {
-		assertExpressionError(0, 1, 12, () -> {
-			parse("a 1H || b 2H");
-		});
+		assertExpressionError(0, 1, 12, () -> parse( "a 1H || b 2H" ) );
 	}
 
 	@Test
 	public void testAnnotationNotAnIdentifier() {
-		assertExpressionError(0, 1, 4, () -> {
-			parse("0 1H");
-		});
+		assertExpressionError(0, 1, 4, () -> parse( "0 1H" ) );
 	}
 
 	@Test
 	public void testAnnotationNotAnIdentifier2() {
-		assertExpressionError(0, 1, 6, () -> {
-			parse("a 0 1H");
-		});
+		assertExpressionError(0, 1, 6, () -> parse( "a 0 1H" ) );
 	}
 
 	@Test
 	public void testAnnotationNoSpace1() {
-		assertSyntaxError(0, 1, 2, () -> {
-			parse("a!1H");
-		});
+		assertSyntaxError(0, 1, 2, () -> parse( "a!1H" ) );
 	}
 
 	@Test
 	public void testAnnotationNoSpace2() {
-		assertSyntaxError(0, 1, 3, () -> {
-			parse("(x)a");
-		});
+		assertSyntaxError(0, 1, 3, () -> parse( "(x)a" ) );
 	}
 
 	@Test
 	public void testAnnotationNoSpace3() {
-		assertSyntaxError(0, 1, 6, () -> {
-			parse("(x)[0]a");
-		});
+		assertSyntaxError(0, 1, 6, () -> parse( "(x)[0]a" ) );
 	}
 
 	@Test
@@ -283,16 +261,12 @@ public class ExpressionBuilderTest extends TestBase {
 
 	@Test
 	public void testMultilineLabel() {
-		assertExpressionError(0, 2, 8, () -> {
-			assertEquals(null, parse("a +\ntest: 1H"));
-		});
+		assertExpressionError(0, 2, 8, () -> assertEquals( null, parse( "a +\ntest: 1H" ) ) );
 	}
 
 	@Test
 	public void testIncomplete() {
-		assertSyntaxError(0, 1, 2, () -> {
-			assertEquals(null, parse("a,"));
-		});
+		assertSyntaxError(0, 1, 2, () -> assertEquals( null, parse( "a," ) ) );
 	}
 
 	public String parse(String text) {

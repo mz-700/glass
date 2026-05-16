@@ -8,27 +8,27 @@ public class Register extends Expression {
 	public static final int IX_CODE = 0xDD;
 	public static final int IY_CODE = 0xFD;
 
-	public static Register B = new Register("b", false, 0, NONE, NONE);
-	public static Register C = new Register("c", false, 1, NONE, NONE);
-	public static Register D = new Register("d", false, 2, NONE, NONE);
-	public static Register E = new Register("e", false, 3, NONE, NONE);
-	public static Register H = new Register("h", false, 4, NONE, NONE);
-	public static Register L = new Register("l", false, 5, NONE, NONE);
-	public static Register A = new Register("a", false, 7, NONE, NONE);
-	public static Register IXH = new Register("ixh", false, 4, NONE, IX_CODE);
-	public static Register IXL = new Register("ixl", false, 5, NONE, IX_CODE);
-	public static Register IYH = new Register("iyh", false, 4, NONE, IY_CODE);
-	public static Register IYL = new Register("iyl", false, 5, NONE, IY_CODE);
-	public static Register BC = new Register("bc", true, NONE, 0, NONE);
-	public static Register DE = new Register("de", true, NONE, 1, NONE);
-	public static Register HL = new Register("hl", true, 6, 2, NONE);
-	public static Register SP = new Register("sp", true, NONE, 3, NONE);
-	public static Register AF = new Register("af", true, NONE, 3, NONE);
-	public static Register AF_ = new Register("af'", true, NONE, NONE, NONE);
-	public static Register IX = new Register("ix", true, 6, 2, IX_CODE, IntegerLiteral.ZERO);
-	public static Register IY = new Register("iy", true, 6, 2, IY_CODE, IntegerLiteral.ZERO);
-	public static Register I = new Register("i", false, NONE, NONE, NONE);
-	public static Register R = new Register("r", false, NONE, NONE, NONE);
+	public static final Register B = new Register( "b", false, 0, NONE, NONE);
+	public static final Register C = new Register( "c", false, 1, NONE, NONE);
+	public static final Register D = new Register( "d", false, 2, NONE, NONE);
+	public static final Register E = new Register( "e", false, 3, NONE, NONE);
+	public static final Register H = new Register( "h", false, 4, NONE, NONE);
+	public static final Register L = new Register( "l", false, 5, NONE, NONE);
+	public static final Register A = new Register( "a", false, 7, NONE, NONE);
+	public static final Register IXH = new Register( "ixh", false, 4, NONE, IX_CODE);
+	public static final Register IXL = new Register( "ixl", false, 5, NONE, IX_CODE);
+	public static final Register IYH = new Register( "iyh", false, 4, NONE, IY_CODE);
+	public static final Register IYL = new Register( "iyl", false, 5, NONE, IY_CODE);
+	public static final Register BC = new Register( "bc", true, NONE, 0, NONE);
+	public static final Register DE = new Register( "de", true, NONE, 1, NONE);
+	public static final Register HL = new Register( "hl", true, 6, 2, NONE);
+	public static final Register SP = new Register( "sp", true, NONE, 3, NONE);
+	public static final Register AF = new Register( "af", true, NONE, 3, NONE);
+	public static final Register AF_ = new Register( "af'", true, NONE, NONE, NONE);
+	public static final Register IX = new Register( "ix", true, 6, 2, IX_CODE, IntegerLiteral.ZERO);
+	public static final Register IY = new Register( "iy", true, 6, 2, IY_CODE, IntegerLiteral.ZERO);
+	public static final Register I = new Register( "i", false, NONE, NONE, NONE);
+	public static final Register R = new Register( "r", false, NONE, NONE, NONE);
 
 	private final String name;
 	private final boolean pair;
@@ -117,72 +117,30 @@ public class Register extends Expression {
 	}
 
 	public static Register getByName(String name) {
-		switch (name) {
-		case "b":
-		case "B":
-			return Register.B;
-		case "c":
-		case "C":
-			return Register.C;
-		case "d":
-		case "D":
-			return Register.D;
-		case "e":
-		case "E":
-			return Register.E;
-		case "h":
-		case "H":
-			return Register.H;
-		case "l":
-		case "L":
-			return Register.L;
-		case "a":
-		case "A":
-			return Register.A;
-		case "ixh":
-		case "IXH":
-			return Register.IXH;
-		case "ixl":
-		case "IXL":
-			return Register.IXL;
-		case "iyh":
-		case "IYH":
-			return Register.IYH;
-		case "iyl":
-		case "IYL":
-			return Register.IYL;
-		case "bc":
-		case "BC":
-			return Register.BC;
-		case "de":
-		case "DE":
-			return Register.DE;
-		case "hl":
-		case "HL":
-			return Register.HL;
-		case "sp":
-		case "SP":
-			return Register.SP;
-		case "af":
-		case "AF":
-			return Register.AF;
-		case "af'":
-		case "AF'":
-			return Register.AF_;
-		case "ix":
-		case "IX":
-			return Register.IX;
-		case "iy":
-		case "IY":
-			return Register.IY;
-		case "i":
-		case "I":
-			return Register.I;
-		case "r":
-		case "R":
-			return Register.R;
-		}
-		return null;
-	}
+        return switch ( name ) {
+            case "b", "B" -> Register.B;
+            case "c", "C" -> Register.C;
+            case "d", "D" -> Register.D;
+            case "e", "E" -> Register.E;
+            case "h", "H" -> Register.H;
+            case "l", "L" -> Register.L;
+            case "a", "A" -> Register.A;
+            case "ixh", "IXH" -> Register.IXH;
+            case "ixl", "IXL" -> Register.IXL;
+            case "iyh", "IYH" -> Register.IYH;
+            case "iyl", "IYL" -> Register.IYL;
+            case "bc", "BC" -> Register.BC;
+            case "de", "DE" -> Register.DE;
+            case "hl", "HL" -> Register.HL;
+            case "sp", "SP" -> Register.SP;
+            case "af", "AF" -> Register.AF;
+            case "af'", "AF'" -> Register.AF_;
+            case "ix", "IX" -> Register.IX;
+            case "iy", "IY" -> Register.IY;
+            case "i", "I" -> Register.I;
+            case "r", "R" -> Register.R;
+            default -> null;
+        };
+    }
 
 }

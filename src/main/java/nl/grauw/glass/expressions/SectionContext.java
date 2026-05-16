@@ -4,6 +4,6 @@ import nl.grauw.glass.instructions.Section;
 
 public interface SectionContext {
 
-	public void addSection(Section section);
+	void addSection( Section section );
 
 }

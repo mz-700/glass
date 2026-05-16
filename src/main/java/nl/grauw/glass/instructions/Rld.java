@@ -16,7 +16,7 @@ public class Rld extends InstructionFactory {
 
 	public static class Rld_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Rld_(Scope context) {
 			super(context);

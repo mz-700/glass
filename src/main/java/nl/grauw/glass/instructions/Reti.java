@@ -16,7 +16,7 @@ public class Reti extends InstructionFactory {
 
 	public static class Reti_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Reti_(Scope context) {
 			super(context);

@@ -16,7 +16,7 @@ public class Ei extends InstructionFactory {
 
 	public static class Ei_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Ei_(Scope context) {
 			super(context);

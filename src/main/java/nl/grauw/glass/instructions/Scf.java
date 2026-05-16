@@ -16,7 +16,7 @@ public class Scf extends InstructionFactory {
 
 	public static class Scf_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Scf_(Scope context) {
 			super(context);

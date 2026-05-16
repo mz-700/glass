@@ -21,10 +21,10 @@ public class In extends InstructionFactory {
 
 	public static class In_N_C extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_R, Schema.INDIRECT_C);
-		public static Schema ARGUMENTS_NO_R = new Schema(Schema.INDIRECT_C);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_R, Schema.INDIRECT_C);
+		public static final Schema ARGUMENTS_NO_R = new Schema( Schema.INDIRECT_C);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public In_N_C(Scope context, Expression arguments) {
 			super(context);
@@ -45,9 +45,9 @@ public class In extends InstructionFactory {
 
 	public static class In_N_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.INDIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.INDIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public In_N_N(Scope context, Expression arguments) {
 			super(context);

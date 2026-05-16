@@ -16,7 +16,7 @@ public class Neg extends InstructionFactory {
 
 	public static class Neg_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Neg_(Scope context) {
 			super(context);

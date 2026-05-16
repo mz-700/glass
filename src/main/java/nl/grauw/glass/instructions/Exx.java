@@ -16,7 +16,7 @@ public class Exx extends InstructionFactory {
 
 	public static class Exx_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Exx_(Scope context) {
 			super(context);

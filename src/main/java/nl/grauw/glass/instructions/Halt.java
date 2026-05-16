@@ -16,7 +16,7 @@ public class Halt extends InstructionFactory {
 
 	public static class Halt_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Halt_(Scope context) {
 			super(context);

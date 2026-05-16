@@ -43,10 +43,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_R_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_R_INDIRECT_HL_IX_IY, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_R_INDIRECT_HL_IX_IY, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Register register1;
-		private Register register2;
+		private final Register register1;
+		private final Register register2;
 
 		public Ld_R_R(Scope context, Register register1, Register register2) {
 			super(context);
@@ -80,9 +80,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_A_BCDE extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.INDIRECT_BC_DE);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.INDIRECT_BC_DE);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_A_BCDE(Scope context, Expression argument) {
 			super(context);
@@ -103,9 +103,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_BCDE_A extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INDIRECT_BC_DE, Schema.DIRECT_A);
+		public static final Schema ARGUMENTS = new Schema( Schema.INDIRECT_BC_DE, Schema.DIRECT_A);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_BCDE_A(Scope context, Expression argument) {
 			super(context);
@@ -126,9 +126,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_SP_HL extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_SP, Schema.DIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_SP, Schema.DIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_SP_HL(Scope context, Expression argument) {
 			super(context);
@@ -149,9 +149,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_A_IR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.DIRECT_IR);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.DIRECT_IR);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_A_IR(Scope context, Expression argument) {
 			super(context);
@@ -174,9 +174,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_IR_A extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_IR, Schema.DIRECT_A);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_IR, Schema.DIRECT_A);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_IR_A(Scope context, Expression argument) {
 			super(context);
@@ -199,10 +199,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_R_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_R_INDIRECT_HL_IX_IY, Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_R_INDIRECT_HL_IX_IY, Schema.DIRECT_N);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Ld_R_N(Scope context, Expression argument1, Expression argument2) {
 			super(context);
@@ -225,10 +225,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_RR_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_RR_INDEX, Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_RR_INDEX, Schema.DIRECT_N);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Ld_RR_N(Scope context, Expression argument1, Expression argument2) {
 			super(context);
@@ -252,9 +252,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_A_NN extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INDIRECT_N, Schema.DIRECT_A);
+		public static final Schema ARGUMENTS = new Schema( Schema.INDIRECT_N, Schema.DIRECT_A);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_A_NN(Scope context, Expression argument) {
 			super(context);
@@ -276,10 +276,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_HL_NN extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_HL_IX_IY, Schema.INDIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_HL_IX_IY, Schema.INDIRECT_N);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Ld_HL_NN(Scope context, Expression argument1, Expression argument2) {
 			super(context);
@@ -302,10 +302,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_RR_NN extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_RR, Schema.INDIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_RR, Schema.INDIRECT_N);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Ld_RR_NN(Scope context, Expression argument1, Expression argument2) {
 			super(context);
@@ -329,9 +329,9 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_NN_A extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.INDIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.INDIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ld_NN_A(Scope context, Expression argument) {
 			super(context);
@@ -353,10 +353,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_NN_HL extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INDIRECT_N, Schema.DIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.INDIRECT_N, Schema.DIRECT_HL_IX_IY);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Ld_NN_HL(Scope context, Expression argument1, Expression argument2) {
 			super(context);
@@ -379,10 +379,10 @@ public class Ld extends InstructionFactory {
 
 	public static class Ld_NN_RR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INDIRECT_N, Schema.DIRECT_RR);
+		public static final Schema ARGUMENTS = new Schema( Schema.INDIRECT_N, Schema.DIRECT_RR);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Ld_NN_RR(Scope context, Expression argument1, Expression argument2) {
 			super(context);

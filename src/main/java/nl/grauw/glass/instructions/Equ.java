@@ -6,7 +6,7 @@ import nl.grauw.glass.expressions.Schema;
 
 public class Equ extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema(Schema.ANY);
+	public static final Schema ARGUMENTS = new Schema( Schema.ANY);
 
 	@Override
 	public InstructionObject createObject(Scope context, Expression arguments) {

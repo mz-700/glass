@@ -16,7 +16,7 @@ public class Retn extends InstructionFactory {
 
 	public static class Retn_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Retn_(Scope context) {
 			super(context);

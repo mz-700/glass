@@ -18,9 +18,9 @@ public class Djnz extends InstructionFactory {
 
 	public static class Djnz_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Djnz_N(Scope context, Expression arguments) {
 			super(context);

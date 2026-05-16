@@ -1,5 +1,6 @@
 package nl.grauw.glass;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import nl.grauw.glass.SourceFile.SourceFileSpan;
 
 public class AssemblyException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+	@Serial private static final long serialVersionUID = 1L;
 
 	private final List<SourceFileSpan> contexts = new ArrayList<>();
 
@@ -33,12 +34,13 @@ public class AssemblyException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		String message = super.getMessage();
+		StringBuilder message = new StringBuilder( super.getMessage() );
 
 		for (SourceFileSpan context : contexts)
-			message += "\n" + context;
+			message.append( "\n" )
+                   .append( context );
 
-		return message;
+		return message.toString();
 	}
 
 	public String getPlainMessage() {

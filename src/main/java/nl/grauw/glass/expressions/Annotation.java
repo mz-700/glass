@@ -36,7 +36,7 @@ public class Annotation extends Expression {
 	}
 
 	public String toString() {
-		return "" + annotation + " " + annotee;
+		return annotation + " " + annotee;
 	}
 
 	public String toDebugString() {

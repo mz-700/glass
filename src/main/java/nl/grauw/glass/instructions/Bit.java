@@ -17,10 +17,10 @@ public class Bit extends InstructionFactory {
 
 	public static class Bit_N_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Bit_N_R(Scope context, Expression argument1, Expression argument2) {
 			super(context);

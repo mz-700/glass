@@ -10,7 +10,7 @@ import nl.grauw.glass.expressions.Schema;
 
 public class Proc extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema();
+	public static final Schema ARGUMENTS = new Schema();
 
 	private final Source source;
 

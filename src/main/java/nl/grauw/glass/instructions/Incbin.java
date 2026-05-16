@@ -36,9 +36,9 @@ public class Incbin extends InstructionFactory {
 
 	public static class Incbin_ extends InstructionObject {
 
-		public static Schema ARGUMENTS_S = new Schema(Schema.STRING);
-		public static Schema ARGUMENTS_S_N = new Schema(Schema.STRING, Schema.INTEGER);
-		public static Schema ARGUMENTS_S_N_N = new Schema(Schema.STRING, Schema.INTEGER, Schema.INTEGER);
+		public static final Schema ARGUMENTS_S = new Schema( Schema.STRING);
+		public static final Schema ARGUMENTS_S_N = new Schema( Schema.STRING, Schema.INTEGER);
+		public static final Schema ARGUMENTS_S_N_N = new Schema( Schema.STRING, Schema.INTEGER, Schema.INTEGER);
 
 		private final Expression path;
 		private final Expression start;

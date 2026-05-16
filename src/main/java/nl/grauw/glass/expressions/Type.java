@@ -13,7 +13,7 @@ public class Type extends Expression {
 	public static final Type SECTIONCONTEXT = new Type("SectionContext");
 	public static final Type SEQUENCE = new Type("Sequence");
 
-	private String name;
+	private final String name;
 
 	Type(String name) {
 		this.name = name;

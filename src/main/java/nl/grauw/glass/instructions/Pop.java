@@ -17,9 +17,9 @@ public class Pop extends InstructionFactory {
 
 	public static class Pop_RR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_RR_AF_INDEX);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_RR_AF_INDEX);
 
-		Expression argument;
+		final Expression argument;
 
 		public Pop_RR(Scope context, Expression argument) {
 			super(context);

@@ -11,7 +11,7 @@ import nl.grauw.glass.expressions.Type;
 
 public class Section extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema(Schema.IDENTIFIER);
+	public static final Schema ARGUMENTS = new Schema( Schema.IDENTIFIER);
 
 	private final Source source;
 

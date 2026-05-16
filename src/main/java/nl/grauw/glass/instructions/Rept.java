@@ -12,10 +12,10 @@ import nl.grauw.glass.expressions.Schema;
 
 public class Rept extends InstructionFactory {
 
-	public static Schema ARGUMENTS_N = new Schema(Schema.INTEGER);
-	public static Schema ARGUMENTS_N_ID = new Schema(Schema.INTEGER, Schema.IDENTIFIER);
-	public static Schema ARGUMENTS_N_ID_N = new Schema(Schema.INTEGER, Schema.IDENTIFIER, Schema.INTEGER);
-	public static Schema ARGUMENTS_N_ID_N_N = new Schema(Schema.INTEGER, Schema.IDENTIFIER, Schema.INTEGER, Schema.INTEGER);
+	public static final Schema ARGUMENTS_N = new Schema( Schema.INTEGER);
+	public static final Schema ARGUMENTS_N_ID = new Schema( Schema.INTEGER, Schema.IDENTIFIER);
+	public static final Schema ARGUMENTS_N_ID_N = new Schema( Schema.INTEGER, Schema.IDENTIFIER, Schema.INTEGER);
+	public static final Schema ARGUMENTS_N_ID_N_N = new Schema( Schema.INTEGER, Schema.IDENTIFIER, Schema.INTEGER, Schema.INTEGER);
 
 	private final Source source;
 

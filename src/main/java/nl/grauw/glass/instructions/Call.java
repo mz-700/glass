@@ -18,9 +18,9 @@ public class Call extends InstructionFactory {
 
 	public static class Call_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Call_N(Scope context, Expression argument) {
 			super(context);
@@ -42,10 +42,10 @@ public class Call extends InstructionFactory {
 
 	public static class Call_F_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(new Schema.IsFlag(), Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( new Schema.IsFlag(), Schema.DIRECT_N);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Call_F_N(Scope context, Expression argument1, Expression argument2) {
 			super(context);

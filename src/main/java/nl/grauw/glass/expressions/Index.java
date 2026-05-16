@@ -39,7 +39,7 @@ public class Index extends Passthrough {
 	}
 
 	public String toString() {
-		return "" + sequence + "[" + index + "]";
+		return sequence + "[" + index + "]";
 	}
 
 	public String toDebugString() {

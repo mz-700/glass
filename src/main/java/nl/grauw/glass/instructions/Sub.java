@@ -19,9 +19,9 @@ public class Sub extends InstructionFactory {
 
 	public static class Sub_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Sub_R(Scope context, Expression arguments) {
 			super(context);
@@ -43,9 +43,9 @@ public class Sub extends InstructionFactory {
 
 	public static class Sub_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Sub_N(Scope context, Expression arguments) {
 			super(context);

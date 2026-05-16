@@ -6,7 +6,7 @@ import nl.grauw.glass.expressions.Schema;
 
 public class Endp extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema();
+	public static final Schema ARGUMENTS = new Schema();
 
 	@Override
 	public InstructionObject createObject(Scope context, Expression arguments) {

@@ -15,9 +15,9 @@ import nl.grauw.glass.expressions.SectionContext;
 
 public class Ds extends InstructionFactory implements SectionContext {
 
-	public static Schema ARGUMENTS_N = new Schema(Schema.INTEGER);
-	public static Schema ARGUMENTS_N_N = new Schema(Schema.INTEGER, Schema.INTEGER);
-	public static Schema ARGUMENTS_VIRTUAL = new Schema(new Schema.IsAnnotation(Schema.INTEGER));
+	public static final Schema ARGUMENTS_N = new Schema( Schema.INTEGER);
+	public static final Schema ARGUMENTS_N_N = new Schema( Schema.INTEGER, Schema.INTEGER);
+	public static final Schema ARGUMENTS_VIRTUAL = new Schema( new Schema.IsAnnotation( Schema.INTEGER));
 
 	private final List<Section> sections = new ArrayList<>();
 

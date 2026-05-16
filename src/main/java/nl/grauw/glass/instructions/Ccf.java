@@ -16,7 +16,7 @@ public class Ccf extends InstructionFactory {
 
 	public static class Ccf_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Ccf_(Scope context) {
 			super(context);

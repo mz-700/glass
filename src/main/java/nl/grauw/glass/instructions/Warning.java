@@ -6,8 +6,8 @@ import nl.grauw.glass.expressions.Schema;
 
 public class Warning extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema();
-	public static Schema ARGUMENTS_S = new Schema(Schema.STRING);
+	public static final Schema ARGUMENTS = new Schema();
+	public static final Schema ARGUMENTS_S = new Schema( Schema.STRING);
 
 	@Override
 	public InstructionObject createObject(Scope context, Expression arguments) {

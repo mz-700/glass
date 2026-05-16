@@ -16,7 +16,7 @@ public class Di extends InstructionFactory {
 
 	public static class Di_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Di_(Scope context) {
 			super(context);

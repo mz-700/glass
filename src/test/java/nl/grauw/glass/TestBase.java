@@ -84,8 +84,9 @@ public class TestBase {
 	}
 
 	public static void assertAssemblyExceptionSpanEquals(int lineStart, int lineEnd, int column, AssemblyException e) {
-		assertEquals(true, e.getContexts().size() > 0, "has context");
-		SourceFileSpan span = e.getContexts().get(0);
+		assertEquals( true, !e.getContexts()
+                              .isEmpty(), "has context" );
+		SourceFileSpan span = e.getContexts().getFirst();
 		assertEquals(lineStart, span.lineStart, "lineStart");
 		assertEquals(lineEnd, span.lineEnd, "lineEnd");
 		assertEquals(column, span.column, "column");

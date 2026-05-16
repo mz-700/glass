@@ -136,96 +136,76 @@ public class ParserTest extends TestBase {
 
 	@Test
 	public void testCharacterLiteralTooLong() {
-		assertSyntaxError(0, 1, 2, () -> {
-			parseExpression("'xx'");
-		});
+		assertSyntaxError(0, 1, 2, () -> parseExpression( "'xx'" ) );
 	}
 
 	@Test
 	public void testCharacterLiteralTooShort() {
-		assertSyntaxError(0, 1, 2, () -> {
-			parseExpression("''");
-		});
+		assertSyntaxError(0, 1, 2, () -> parseExpression( "''" ) );
 	}
 
 	@Test
 	public void testCharacterLiteralUnclosed() {
-		assertSyntaxError(0, 1, 1, () -> {
-			parseExpression("'");
-		});
+		assertSyntaxError(0, 1, 1, () -> parseExpression( "'" ) );
 	}
 
 	@Test
 	public void testCharacterLiteralUnclosedEscape() {
-		assertSyntaxError(0, 1, 2, () -> {
-			parseExpression("'\\");
-		});
+		assertSyntaxError(0, 1, 2, () -> parseExpression( "'\\" ) );
 	}
 
 	@Test
 	public void testStringLiteral() {
-		assertEquals("xyz", ((StringLiteral)parseExpression("\"xyz\"")).getString());
+		assertEquals("xyz", parseExpression("\"xyz\"").getString() );
 	}
 
 	@Test
 	public void testStringLiteralDoubleQuote() {
-		assertEquals("x\"z", ((StringLiteral)parseExpression("\"x\"\"z\"")).getString());
+		assertEquals("x\"z", parseExpression("\"x\"\"z\"").getString() );
 	}
 
 	@Test
 	public void testStringLiteralEscape() {
-		assertEquals("x\0z", ((StringLiteral)parseExpression("\"x\\0z\"")).getString());
-		assertEquals("x\7z", ((StringLiteral)parseExpression("\"x\\az\"")).getString());
-		assertEquals("x\tz", ((StringLiteral)parseExpression("\"x\\tz\"")).getString());
-		assertEquals("x\nz", ((StringLiteral)parseExpression("\"x\\nz\"")).getString());
-		assertEquals("x\fz", ((StringLiteral)parseExpression("\"x\\fz\"")).getString());
-		assertEquals("x\rz", ((StringLiteral)parseExpression("\"x\\rz\"")).getString());
-		assertEquals("x\33z", ((StringLiteral)parseExpression("\"x\\ez\"")).getString());
-		assertEquals("x\"z", ((StringLiteral)parseExpression("\"x\\\"z\"")).getString());
-		assertEquals("x'z", ((StringLiteral)parseExpression("\"x\\'z\"")).getString());
-		assertEquals("x\\z", ((StringLiteral)parseExpression("\"x\\\\z\"")).getString());
+		assertEquals("x\0z", parseExpression("\"x\\0z\"").getString() );
+		assertEquals("x\7z", parseExpression("\"x\\az\"").getString() );
+		assertEquals("x\tz", parseExpression("\"x\\tz\"").getString() );
+		assertEquals("x\nz", parseExpression("\"x\\nz\"").getString() );
+		assertEquals("x\fz", parseExpression("\"x\\fz\"").getString() );
+		assertEquals("x\rz", parseExpression("\"x\\rz\"").getString() );
+		assertEquals("x\33z", parseExpression("\"x\\ez\"").getString() );
+		assertEquals("x\"z", parseExpression("\"x\\\"z\"").getString() );
+		assertEquals("x'z", parseExpression("\"x\\'z\"").getString() );
+		assertEquals("x\\z", parseExpression("\"x\\\\z\"").getString() );
 	}
 
 	@Test
 	public void testStringLiteralUnclosed() {
-		assertSyntaxError(0, 1, 1, () -> {
-			parseExpression("\"");
-		});
+		assertSyntaxError(0, 1, 1, () -> parseExpression( "\"" ) );
 	}
 
 	@Test
 	public void testStringLiteralUnclosedEscape() {
-		assertSyntaxError(0, 1, 2, () -> {
-			parseExpression("\"\\");
-		});
+		assertSyntaxError(0, 1, 2, () -> parseExpression( "\"\\" ) );
 	}
 
 	@Test
 	public void testHexNumberTooShort() {
-		assertSyntaxError(0, 1, 2, () -> {
-			parseExpression("0x");
-		});
+		assertSyntaxError(0, 1, 2, () -> parseExpression( "0x" ) );
 	}
 
 	@Test
 	public void testHexNumberWrong() {
-		assertSyntaxError(0, 1, 3, () -> {
-			parseExpression("003x0");
-		});
+		assertSyntaxError(0, 1, 3, () -> parseExpression( "003x0" ) );
 	}
 
 	@Test
 	public void testHexNumberWrong2() {
-		assertSyntaxError(0, 1, 3, () -> {
-			parseExpression("0x0x0");
-		});
+		assertSyntaxError(0, 1, 3, () -> parseExpression( "0x0x0" ) );
 	}
 
 	@Test
 	public void testHexNumberWrong3() {
-		assertSyntaxError(0, 1, 1, () -> {
-			parseExpression("3x0");
-		});
+		assertSyntaxError(0, 1, 1, () -> parseExpression( "3x0" ) );
 	}
 
 	@Test

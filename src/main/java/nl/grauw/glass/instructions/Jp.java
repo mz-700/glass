@@ -20,9 +20,9 @@ public class Jp extends InstructionFactory {
 
 	public static class Jp_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Jp_N(Scope context, Expression argument) {
 			super(context);
@@ -44,10 +44,10 @@ public class Jp extends InstructionFactory {
 
 	public static class Jp_F_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(new Schema.IsFlag(), Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( new Schema.IsFlag(), Schema.DIRECT_N);
 
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Jp_F_N(Scope context, Expression argument1, Expression argument2) {
 			super(context);
@@ -70,10 +70,10 @@ public class Jp extends InstructionFactory {
 
 	public static class Jp_HL extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INDIRECT_HL_IX_IY);
-		public static Schema ARGUMENTS_ALT = new Schema(Schema.DIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS_ALT = new Schema( Schema.DIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Jp_HL(Scope context, Expression argument) {
 			super(context);

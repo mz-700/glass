@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -95,16 +96,16 @@ public class ListFileTest extends TestBase {
 	static Path temporaryDirectory;
 
 	public List<String> list(String... sourceLines) {
-		SourceBuilder sourceBuilder = new SourceBuilder(Arrays.asList(temporaryDirectory));
+		SourceBuilder sourceBuilder = new SourceBuilder( Collections.singletonList( temporaryDirectory ) );
 		Source source = sourceBuilder.parse(new SourceFile(String.join("\n", sourceLines)));
 		String list;
 		try {
 			source.assemble(new Assembler.NullOutputStream());
 			try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-				try (PrintStream printStream = new PrintStream(outputStream, false, "UTF-8")) {
+				try (PrintStream printStream = new PrintStream( outputStream, false, StandardCharsets.UTF_8 )) {
 					new ListingWriter(new PrintStream(outputStream)).write(source);
 				}
-				list = outputStream.toString("UTF-8");
+				list = outputStream.toString( StandardCharsets.UTF_8 );
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

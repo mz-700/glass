@@ -11,7 +11,7 @@ import nl.grauw.glass.expressions.Schema;
 
 public class If extends InstructionFactory {
 
-	private static Schema ARGUMENTS = new Schema(Schema.INTEGER);
+	private static final Schema ARGUMENTS = new Schema( Schema.INTEGER);
 
 	private final Source thenSource;
 	private final Source elseSource;
@@ -50,11 +50,7 @@ public class If extends InstructionFactory {
 		@Override
 		public Expression resolve(Expression address) {
 			context.setAddress(address);
-			if (argument.getInteger() != 0) {
-				return thenSource.resolve(address);
-			} else {
-				return elseSource.resolve(address);
-			}
+			return getSelectedSource().resolve(address);
 		}
 
 		@Override
@@ -64,11 +60,11 @@ public class If extends InstructionFactory {
 
 		@Override
 		public byte[] getBytes() {
-			if (argument.getInteger() != 0) {
-				return thenSource.getBytes();
-			} else {
-				return elseSource.getBytes();
-			}
+			return getSelectedSource().getBytes();
+		}
+
+		public Source getSelectedSource() {
+			return argument.getInteger() != 0 ? thenSource : elseSource;
 		}
 
 	}

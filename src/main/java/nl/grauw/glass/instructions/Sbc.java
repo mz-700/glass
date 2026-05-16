@@ -21,9 +21,9 @@ public class Sbc extends InstructionFactory {
 
 	public static class Sbc_A_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Sbc_A_R(Scope context, Expression arguments) {
 			super(context);
@@ -45,9 +45,9 @@ public class Sbc extends InstructionFactory {
 
 	public static class Sbc_A_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Sbc_A_N(Scope context, Expression arguments) {
 			super(context);
@@ -68,9 +68,9 @@ public class Sbc extends InstructionFactory {
 
 	public static class Sbc_HL_RR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_HL, Schema.DIRECT_RR);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_HL, Schema.DIRECT_RR);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Sbc_HL_RR(Scope context, Expression argument) {
 			super(context);

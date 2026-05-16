@@ -1,0 +1,7 @@
+
+PRINT:
+    LD  A,(HL)
+    INC HL
+    CP  ' '
+    JR  NZ,PRINT
+    RET

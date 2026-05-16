@@ -16,7 +16,7 @@ public class Ini extends InstructionFactory {
 
 	public static class Ini_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Ini_(Scope context) {
 			super(context);

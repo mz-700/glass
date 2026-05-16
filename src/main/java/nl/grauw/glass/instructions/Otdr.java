@@ -16,7 +16,7 @@ public class Otdr extends InstructionFactory {
 
 	public static class Otdr_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Otdr_(Scope context) {
 			super(context);

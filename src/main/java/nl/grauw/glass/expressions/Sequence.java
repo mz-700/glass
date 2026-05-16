@@ -44,7 +44,7 @@ public class Sequence extends BinaryOperator {
 	}
 
 	public String toString() {
-		return "" + term1 + ", " + term2;
+		return term1 + ", " + term2;
 	}
 
 	public String toDebugString() {

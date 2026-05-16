@@ -26,7 +26,7 @@ public abstract class BinaryOperator extends Expression {
 	}
 
 	public String toString() {
-		return "" + term1 + " " + getLexeme() + " " + term2;
+		return term1 + " " + getLexeme() + " " + term2;
 	}
 
 	public String toDebugString() {

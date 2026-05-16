@@ -16,9 +16,9 @@ public class Mulub extends InstructionFactory {
 
 	public static class Mulub_R_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.DIRECT_R);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.DIRECT_R);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Mulub_R_R(Scope context, Expression argument) {
 			super(context);

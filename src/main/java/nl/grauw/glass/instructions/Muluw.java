@@ -16,9 +16,9 @@ public class Muluw extends InstructionFactory {
 
 	public static class Muluw_RR_RR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_HL, Schema.DIRECT_RR);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_HL, Schema.DIRECT_RR);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Muluw_RR_RR(Scope context, Expression argument) {
 			super(context);

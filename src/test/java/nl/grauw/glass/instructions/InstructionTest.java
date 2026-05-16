@@ -117,8 +117,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testBit_Invalid() {
-		assertArgumentException(0, () -> { parse("bit 3,ixh"); });
-		assertArgumentException(0, () -> { parse("bit 2,iyl"); });
+		assertArgumentException(0, () -> parse( "bit 3,ixh" ) );
+		assertArgumentException(0, () -> parse( "bit 2,iyl" ) );
 	}
 
 	@Test
@@ -644,8 +644,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testRes_Invalid() {
-		assertArgumentException(0, () -> { parse("res 3,ixh"); });
-		assertArgumentException(0, () -> { parse("res 2,iyl"); });
+		assertArgumentException(0, () -> parse( "res 3,ixh" ) );
+		assertArgumentException(0, () -> parse( "res 2,iyl" ) );
 	}
 
 	@Test
@@ -691,8 +691,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testRl_Invalid() {
-		assertArgumentException(0, () -> { parse("rl ixh"); });
-		assertArgumentException(0, () -> { parse("rl iyl"); });
+		assertArgumentException(0, () -> parse( "rl ixh" ) );
+		assertArgumentException(0, () -> parse( "rl iyl" ) );
 	}
 
 	@Test
@@ -716,8 +716,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testRlc_Invalid() {
-		assertArgumentException(0, () -> { parse("rlc ixh"); });
-		assertArgumentException(0, () -> { parse("rlc iyl"); });
+		assertArgumentException(0, () -> parse( "rlc ixh" ) );
+		assertArgumentException(0, () -> parse( "rlc iyl" ) );
 	}
 
 	@Test
@@ -746,8 +746,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testRr_Invalid() {
-		assertArgumentException(0, () -> { parse("rr ixh"); });
-		assertArgumentException(0, () -> { parse("rr iyl"); });
+		assertArgumentException(0, () -> parse( "rr ixh" ) );
+		assertArgumentException(0, () -> parse( "rr iyl" ) );
 	}
 
 	@Test
@@ -771,8 +771,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testRrc_Invalid() {
-		assertArgumentException(0, () -> { parse("rrc ixh"); });
-		assertArgumentException(0, () -> { parse("rrc iyl"); });
+		assertArgumentException(0, () -> parse( "rrc ixh" ) );
+		assertArgumentException(0, () -> parse( "rrc iyl" ) );
 	}
 
 	@Test
@@ -847,8 +847,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testSet_Invalid() {
-		assertArgumentException(0, () -> { parse("set 3,ixh"); });
-		assertArgumentException(0, () -> { parse("set 2,iyl"); });
+		assertArgumentException(0, () -> parse( "set 3,ixh" ) );
+		assertArgumentException(0, () -> parse( "set 2,iyl" ) );
 	}
 
 	@Test
@@ -867,8 +867,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testSla_Invalid() {
-		assertArgumentException(0, () -> { parse("sla ixh"); });
-		assertArgumentException(0, () -> { parse("sla iyl"); });
+		assertArgumentException(0, () -> parse( "sla ixh" ) );
+		assertArgumentException(0, () -> parse( "sla iyl" ) );
 	}
 
 	@Test
@@ -887,8 +887,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testSra_Invalid() {
-		assertArgumentException(0, () -> { parse("sra ixh"); });
-		assertArgumentException(0, () -> { parse("sra iyl"); });
+		assertArgumentException(0, () -> parse( "sra ixh" ) );
+		assertArgumentException(0, () -> parse( "sra iyl" ) );
 	}
 
 	@Test
@@ -907,8 +907,8 @@ public class InstructionTest extends TestBase {
 
 	@Test
 	public void testSrl_Invalid() {
-		assertArgumentException(0, () -> { parse("srl ixh"); });
-		assertArgumentException(0, () -> { parse("srl iyl"); });
+		assertArgumentException(0, () -> parse( "srl ixh" ) );
+		assertArgumentException(0, () -> parse( "srl iyl" ) );
 	}
 
 	@Test

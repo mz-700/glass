@@ -18,7 +18,7 @@ public class Ret extends InstructionFactory {
 
 	public static class Ret_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Ret_(Scope context) {
 			super(context);
@@ -38,9 +38,9 @@ public class Ret extends InstructionFactory {
 
 	public static class Ret_F extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(new Schema.IsFlag());
+		public static final Schema ARGUMENTS = new Schema( new Schema.IsFlag());
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ret_F(Scope context, Expression argument) {
 			super(context);

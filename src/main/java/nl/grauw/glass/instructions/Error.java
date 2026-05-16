@@ -5,10 +5,12 @@ import nl.grauw.glass.Scope;
 import nl.grauw.glass.expressions.Expression;
 import nl.grauw.glass.expressions.Schema;
 
+import java.io.Serial;
+
 public class Error extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema();
-	public static Schema ARGUMENTS_S = new Schema(Schema.STRING);
+	public static final Schema ARGUMENTS = new Schema();
+	public static final Schema ARGUMENTS_S = new Schema( Schema.STRING);
 
 	@Override
 	public InstructionObject createObject(Scope context, Expression arguments) {
@@ -36,7 +38,7 @@ public class Error extends InstructionFactory {
 	}
 
 	public static class ErrorDirectiveException extends AssemblyException {
-		private static final long serialVersionUID = 1L;
+		@Serial private static final long serialVersionUID = 1L;
 
 		public ErrorDirectiveException() {
 			this("Error directive was encountered.");

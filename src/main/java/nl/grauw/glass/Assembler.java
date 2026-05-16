@@ -12,19 +12,17 @@ import java.util.List;
 
 public class Assembler {
 
-	private static Assembler instance;
-	private final Source source;
+    private final Source source;
 
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+     */
+	static void main( String[] args ) {
 		if (args.length == 0) {
-			System.out.println(String.format("%s %s by %s",
-				Assembler.class.getPackage().getImplementationTitle(),
-				Assembler.class.getPackage().getImplementationVersion(),
-				Assembler.class.getPackage().getImplementationVendor()
-			));
+			System.out.printf( "%s %s by %s%n",
+                               Assembler.class.getPackage().getImplementationTitle(),
+                               Assembler.class.getPackage().getImplementationVersion(),
+                               Assembler.class.getPackage().getImplementationVendor()
+                             );
 			System.out.println();
 			System.out.println("Usage: java -jar glass.jar [OPTION] SOURCE [OBJECT] [SYMBOL]");
 			System.exit(1);
@@ -34,7 +32,8 @@ public class Assembler {
 		Path objectPath = null;
 		Path symbolPath = null;
 		Path listPath = null;
-		List<Path> includePaths = new ArrayList<Path>();
+		Path debugPath = null;
+		List<Path> includePaths = new ArrayList<>();
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-I")) {
 				if (++i >= args.length)
@@ -44,6 +43,10 @@ public class Assembler {
 				if (++i >= args.length)
 					throw new AssemblyException("Missing argument value.");
 				listPath = Paths.get(args[i]);
+			} else if (args[i].equals("-D")) {
+				if (++i >= args.length)
+					throw new AssemblyException("Missing argument value.");
+				debugPath = Paths.get(args[i]);
 			} else if (sourcePath == null) {
 				sourcePath = Paths.get(args[i]);
 			} else if (objectPath == null) {
@@ -55,12 +58,14 @@ public class Assembler {
 			}
 		}
 
-		instance = new Assembler(sourcePath, includePaths);
-		instance.writeObject(objectPath);
+		Assembler instance = new Assembler( sourcePath, includePaths );
+		instance.writeObject( objectPath );
+		if (debugPath != null)
+			instance.writeDebug( debugPath );
 		if (symbolPath != null)
-			instance.writeSymbols(symbolPath);
+			instance.writeSymbols( symbolPath );
 		if (listPath != null)
-			instance.writeList(listPath);
+			instance.writeList( listPath );
 	}
 
 	public Assembler(Path sourcePath, List<Path> includePaths) {
@@ -86,6 +91,14 @@ public class Assembler {
 	public void writeList(Path listPath) {
 		try (PrintStream output = new PrintStream(createBufferedOutputStream(listPath))) {
 			new ListingWriter(output).write(source);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void writeDebug(Path debugPath) {
+		try (PrintStream output = new PrintStream(createBufferedOutputStream(debugPath))) {
+			new DebugWriter(output).write(source);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

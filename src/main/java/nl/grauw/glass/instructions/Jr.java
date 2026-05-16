@@ -20,9 +20,9 @@ public class Jr extends InstructionFactory {
 
 	public static class Jr_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Jr_N(Scope context, Expression argument) {
 			super(context);
@@ -46,11 +46,11 @@ public class Jr extends InstructionFactory {
 
 	public static class Jr_F_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(new Schema.IsFlagZC(), Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( new Schema.IsFlagZC(), Schema.DIRECT_N);
 
 		private final Scope context;
-		private Expression argument1;
-		private Expression argument2;
+		private final Expression argument1;
+		private final Expression argument2;
 
 		public Jr_F_N(Scope context, Expression argument1, Expression argument2) {
 			super(context);

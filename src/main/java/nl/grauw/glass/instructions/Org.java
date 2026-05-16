@@ -15,9 +15,9 @@ public class Org extends InstructionFactory {
 
 	public static class Org_N extends Empty.EmptyObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INTEGER);
+		public static final Schema ARGUMENTS = new Schema( Schema.INTEGER);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Org_N(Scope context, Expression argument) {
 			super(context);

@@ -16,7 +16,7 @@ public class Cpdr extends InstructionFactory {
 
 	public static class Cpdr_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Cpdr_(Scope context) {
 			super(context);

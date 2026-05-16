@@ -68,9 +68,7 @@ public class ExpressionTest extends TestBase {
 
 	@Test
 	public void testDivideByZero() {
-		assertThrows(EvaluationException.class, () -> {
-			parse("1 / 0").getInteger();
-		});
+		assertThrows(EvaluationException.class, () -> parse( "1 / 0" ).getInteger() );
 	}
 
 	@Test
@@ -80,9 +78,7 @@ public class ExpressionTest extends TestBase {
 
 	@Test
 	public void testModuloByZero() {
-		assertThrows(EvaluationException.class, () -> {
-			parse("1 % 0").getInteger();
-		});
+		assertThrows(EvaluationException.class, () -> parse( "1 % 0" ).getInteger() );
 	}
 
 	@Test
@@ -270,26 +266,18 @@ public class ExpressionTest extends TestBase {
 		Scope scope = new Scope();
 		scope.addSymbol("object", new ContextLiteral(new Scope(scope)));
 		scope.addSymbol("symbol", IntegerLiteral.of(11));
-		assertThrows(SymbolNotFoundException.class, () -> {
-			parse("object.symbol", scope).getInteger();
-		});
-		assertThrows(SymbolNotFoundException.class, () -> {
-			parse("(object).symbol", scope).getInteger();
-		});
+		assertThrows(SymbolNotFoundException.class, () -> parse( "object.symbol", scope ).getInteger() );
+		assertThrows(SymbolNotFoundException.class, () -> parse( "(object).symbol", scope ).getInteger() );
 	}
 
 	@Test
 	public void testMemberNoContext() {
-		assertThrows(EvaluationException.class, () -> {
-			parse("1.symbol").getInteger();
-		});
+		assertThrows(EvaluationException.class, () -> parse( "1.symbol" ).getInteger() );
 	}
 
 	@Test
 	public void testMemberNoIdentifier() {
-		assertThrows(ExpressionError.class, () -> {
-			parse("($).1").getInteger();
-		});
+		assertThrows(ExpressionError.class, () -> parse( "($).1" ).getInteger() );
 	}
 
 	@Test
@@ -305,16 +293,12 @@ public class ExpressionTest extends TestBase {
 
 	@Test
 	public void testIndexOutOfBounds() {
-		assertThrows(EvaluationException.class, () -> {
-			parse("(4H, 5H)[2]").getInteger();
-		});
+		assertThrows(EvaluationException.class, () -> parse( "(4H, 5H)[2]" ).getInteger() );
 	}
 
 	@Test
 	public void testIndexNoSequenceOutOfBounds() {
-		assertThrows(EvaluationException.class, () -> {
-			parse("4H[1]").getInteger();
-		});
+		assertThrows(EvaluationException.class, () -> parse( "4H[1]" ).getInteger() );
 	}
 
 	@Test
@@ -322,7 +306,7 @@ public class ExpressionTest extends TestBase {
 		assertEquals('a', parse("\"abc\"[0]").getInteger());
 		assertEquals('b', parse("\"abc\"[1]").getInteger());
 		assertEquals('c', parse("\"abc\"[2]").getInteger());
-		EvaluationException e = assertThrows(EvaluationException.class, () -> { parse("\"abc\"[3]").getInteger(); });
+		EvaluationException e = assertThrows(EvaluationException.class, () -> parse( "\"abc\"[3]" ).getInteger() );
 		assertEquals("Index out of bounds.", e.getPlainMessage());
 	}
 

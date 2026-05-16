@@ -2,6 +2,7 @@ package nl.grauw.glass;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class SourceFile {
 	public SourceFile(Path path) {
 		this.path = path;
 		try {
-			this.content = Files.readAllLines(path, Charset.forName("UTF-8"));
+			this.content = Files.readAllLines( path, StandardCharsets.UTF_8 );
 		} catch (IOException e) {
 			throw new AssemblyException(e);
 		}
@@ -87,19 +88,23 @@ public class SourceFile {
 
 		@Override
 		public String toString() {
-			String string = "[at " + getSourceFile().getPath() + ":" + (lineStart + 1) + (column != -1 ? "," + (column + 1) : "") + "]";
+			StringBuilder string = new StringBuilder( "[at " + getSourceFile().getPath() + ":" + ( lineStart + 1 ) + ( column != -1 ? "," + ( column + 1 ) : "" ) + "]" );
 
 			for (int i = lineStart; i < lineEnd; i++) {
-				string += "\n" + getLine(i);
+				string.append( "\n" )
+                      .append( getLine( i ) );
 			}
 
 			if (column != -1) {
 				String line = getLine(Math.min(lineEnd, content.size()) - 1);
 				int end = Math.min(column, line.length());
-				string += "\n" + line.substring(0, end).replaceAll("[^\t]", " ") + "^";
+				string.append( "\n" )
+                      .append( line.substring( 0, end )
+                                   .replaceAll( "[^\t]", " " ) )
+                      .append( "^" );
 			}
 
-			return string;
+			return string.toString();
 		}
 	}
 }

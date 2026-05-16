@@ -234,7 +234,7 @@ public class SymbolsTest extends TestBase {
 	static Path temporaryDirectory;
 
 	public List<String> symbols(String... sourceLines) {
-		SourceBuilder sourceBuilder = new SourceBuilder(Arrays.asList(temporaryDirectory));
+		SourceBuilder sourceBuilder = new SourceBuilder( Collections.singletonList( temporaryDirectory ) );
 		Source source = sourceBuilder.parse(new SourceFile(String.join("\n", sourceLines)));
 		try {
 			source.assemble(new Assembler.NullOutputStream());

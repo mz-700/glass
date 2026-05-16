@@ -17,9 +17,9 @@ public class Rr extends InstructionFactory {
 
 	public static class Rr_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Rr_R(Scope context, Expression argument) {
 			super(context);

@@ -16,7 +16,7 @@ public class Inir extends InstructionFactory {
 
 	public static class Inir_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Inir_(Scope context) {
 			super(context);

@@ -16,7 +16,7 @@ public class Outi extends InstructionFactory {
 
 	public static class Outi_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Outi_(Scope context) {
 			super(context);

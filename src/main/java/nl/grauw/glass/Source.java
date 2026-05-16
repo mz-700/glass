@@ -12,7 +12,7 @@ import nl.grauw.glass.expressions.IntegerLiteral;
 public class Source {
 
 	private final Scope scope;
-	private List<Line> lines = new ArrayList<Line>();
+	private List<Line> lines = new ArrayList<>();
 
 	public Source(Scope scope) {
 		this.scope = scope;
@@ -27,7 +27,7 @@ public class Source {
 	}
 
 	public Line getLastLine() {
-		return lines.size() > 0 ? lines.get(lines.size() - 1) : null;
+		return !lines.isEmpty() ? lines.getLast() : null;
 	}
 
 	public Source copy(Scope scope) {

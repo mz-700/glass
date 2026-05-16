@@ -16,7 +16,7 @@ public class Ldd extends InstructionFactory {
 
 	public static class Ldd_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Ldd_(Scope context) {
 			super(context);

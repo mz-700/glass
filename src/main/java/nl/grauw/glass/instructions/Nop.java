@@ -16,7 +16,7 @@ public class Nop extends InstructionFactory {
 
 	public static class Nop_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Nop_(Scope context) {
 			super(context);

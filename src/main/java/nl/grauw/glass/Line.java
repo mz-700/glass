@@ -77,6 +77,10 @@ public class Line {
 		return instruction;
 	}
 
+	public InstructionObject getInstructionObject() {
+		return instructionObject;
+	}
+
 	public void register(Scope sourceScope) {
 		try {
 			directive.register(sourceScope, this);

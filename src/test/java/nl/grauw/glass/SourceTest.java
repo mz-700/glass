@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -197,34 +199,28 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testMacroTooManyArguments() {
-		assertArgumentException(2, () -> {
-			assemble(
-				"test: MACRO",
-				" ENDM",
-				" test 10H"
-			);
-		});
+		assertArgumentException(2, () -> assemble(
+            "test: MACRO",
+            " ENDM",
+            " test 10H"
+) );
 	}
 
 	@Test
 	public void testMacroTooFewArguments() {
-		assertArgumentException(2, () -> {
-			assemble(
-				"test: MACRO arg",
-				" ENDM",
-				" test"
-			);
-		});
+		assertArgumentException(2, () -> assemble(
+            "test: MACRO arg",
+            " ENDM",
+            " test"
+) );
 	}
 
 	@Test
 	public void testMacroNonIdentifierArguments() {
-		assertArgumentException(0, () -> {
-			assemble(
-				"test: MACRO (arg)",
-				" ENDM"
-			);
-		});
+		assertArgumentException(0, () -> assemble(
+            "test: MACRO (arg)",
+            " ENDM"
+) );
 	}
 
 	@Test
@@ -251,11 +247,9 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testMacroNoEnd() {
-		assertAssemblyException(1, 1, () -> {
-			assemble(
-				"test: MACRO"
-			);
-		});
+		assertAssemblyException(1, 1, () -> assemble(
+            "test: MACRO"
+) );
 	}
 
 	@Test
@@ -363,19 +357,17 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testMacroUnboundReference() {
-		assertSymbolNotFoundException("value", 6, () -> {
-			assertArrayEquals(b(0x3E, 0x14, 0x3E, 0x24), assemble(
-				"test: MACRO arg",
-				" ld a,10H + arg + value",
-				" test2 arg",
-				"value: equ 3",
-				" ENDM",
-				"test2: MACRO arg",
-				" ld a,20H + arg + value",
-				" ENDM",
-				" test 1H"
-			));
-		});
+		assertSymbolNotFoundException("value", 6, () -> assertArrayEquals( b( 0x3E, 0x14, 0x3E, 0x24 ), assemble(
+            "test: MACRO arg",
+            " ld a,10H + arg + value",
+            " test2 arg",
+            "value: equ 3",
+            " ENDM",
+            "test2: MACRO arg",
+            " ld a,20H + arg + value",
+            " ENDM",
+            " test 1H"
+) ) );
 	}
 
 	@Test
@@ -451,16 +443,14 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testMacroDefinitionWithNonIntegerArgumentBeforeDereference() {
-		assertEvaluationException(0, () -> {
-			assertArrayEquals(b(0x11, 0x03, 0x00), assemble(
-				" ld de,test.test2",
-				"test: MACRO arg1, arg2",
-				" ld hl,arg1",
-				" ret arg2",
-				"test2:",
-				" ENDM"
-			));
-		});
+		assertEvaluationException(0, () -> assertArrayEquals( b( 0x11, 0x03, 0x00 ), assemble(
+            " ld de,test.test2",
+            "test: MACRO arg1, arg2",
+            " ld hl,arg1",
+            " ret arg2",
+            "test2:",
+            " ENDM"
+) ) );
 	}
 
 	@Test
@@ -597,16 +587,14 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testReptWithLabelNoIndex() {
-		assertSymbolNotFoundException("test.test", 5, () -> {
-			assemble(
-				" nop",
-				"test: REPT 2",
-				" nop",
-				"test: nop",
-				" ENDM",
-				" ld hl,test.test"
-			);
-		});
+		assertSymbolNotFoundException("test.test", 5, () -> assemble(
+            " nop",
+            "test: REPT 2",
+            " nop",
+            "test: nop",
+            " ENDM",
+            " ld hl,test.test"
+) );
 	}
 
 	@Test
@@ -630,12 +618,10 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testReptNoCount() {
-		assertArgumentException(0, () -> {
-			assemble(
-				" REPT",
-				" ENDM"
-			);
-		});
+		assertArgumentException(0, () -> assemble(
+            " REPT",
+            " ENDM"
+) );
 	}
 
 	@Test
@@ -676,13 +662,11 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testIrpNoIdentifier() {
-		assertArgumentException(0, () -> {
-			assertArrayEquals(b(), assemble(
-				" IRP",
-				" nop",
-				" ENDM"
-			));
-		});
+		assertArgumentException(0, () -> assertArrayEquals( b(), assemble(
+            " IRP",
+            " nop",
+            " ENDM"
+) ) );
 	}
 
 	@Test
@@ -707,16 +691,14 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testIrpWithLabelNoIndex() {
-		assertSymbolNotFoundException("test.test", 5, () -> {
-			assemble(
-				" nop",
-				"test: IRP ?value, 10H, 20H, 30H",
-				" nop",
-				"test: nop",
-				" ENDM",
-				" ld hl,test.test"
-			);
-		});
+		assertSymbolNotFoundException("test.test", 5, () -> assemble(
+            " nop",
+            "test: IRP ?value, 10H, 20H, 30H",
+            " nop",
+            "test: nop",
+            " ENDM",
+            " ld hl,test.test"
+) );
 	}
 
 	@Test
@@ -839,15 +821,13 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testIfSymbolNotFound() {
-		assertSymbolNotFoundException("y", 4, () -> {
-			assemble(
-				"x: equ y",
-				" IF 0",
-				"y: equ 1",
-				" ENDIF",
-				" jp x"
-			);
-		});
+		assertSymbolNotFoundException("y", 4, () -> assemble(
+            "x: equ y",
+            " IF 0",
+            "y: equ 1",
+            " ENDIF",
+            " jp x"
+) );
 	}
 
 	@Test
@@ -888,29 +868,23 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testError() {
-		assertErrorDirectiveException("Error directive was encountered.", 0, () -> {
-			assemble(
-				" ERROR"
-			);
-		});
+		assertErrorDirectiveException("Error directive was encountered.", 0, () -> assemble(
+            " ERROR"
+) );
 	}
 
 	@Test
 	public void testErrorWithMessage() {
-		assertErrorDirectiveException("Test", 0, () -> {
-			assemble(
-				" ERROR \"Test\""
-			);
-		});
+		assertErrorDirectiveException("Test", 0, () -> assemble(
+            " ERROR \"Test\""
+) );
 	}
 
 	@Test
 	public void testAnnotationNotSupported() {
-		assertArgumentException(0, () -> {
-			assemble(
-				" or A 0"
-			);
-		});
+		assertArgumentException(0, () -> assemble(
+            " or A 0"
+) );
 	}
 
 	@Test
@@ -924,20 +898,16 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testDsVirtualWithFill() {
-		assertArgumentException(0, () -> {
-			assemble(
-				" ds VIRTUAL 10H, 0"
-			);
-		});
+		assertArgumentException(0, () -> assemble(
+            " ds VIRTUAL 10H, 0"
+) );
 	}
 
 	@Test
 	public void testDsUnknownAnnotation() {
-		assertArgumentException(0, () -> {
-			assemble(
-				" ds UNKNOWN 10H"
-			);
-		});
+		assertArgumentException(0, () -> assemble(
+            " ds UNKNOWN 10H"
+) );
 	}
 
 	@Test
@@ -980,14 +950,12 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testSectionExceedsSpace() {
-		assertAssemblyException(0, () -> {
-			assemble(
-				"ROM: ds 2H",
-				" SECTION ROM",
-				" ld hl,$",
-				" ENDS"
-			);
-		});
+		assertAssemblyException(0, () -> assemble(
+            "ROM: ds 2H",
+            " SECTION ROM",
+            " ld hl,$",
+            " ENDS"
+) );
 	}
 
 	@Test
@@ -1016,29 +984,23 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testEndm() {
-		assertAssemblyException(0, () -> {
-			assemble(
-				" ENDM"
-			);
-		});
+		assertAssemblyException(0, () -> assemble(
+            " ENDM"
+) );
 	}
 
 	@Test
 	public void testEndp() {
-		assertAssemblyException(0, () -> {
-			assemble(
-				" ENDP"
-			);
-		});
+		assertAssemblyException(0, () -> assemble(
+            " ENDP"
+) );
 	}
 
 	@Test
 	public void testEnds() {
-		assertAssemblyException(0, () -> {
-			assemble(
-				" ENDS"
-			);
-		});
+		assertAssemblyException(0, () -> assemble(
+            " ENDS"
+) );
 	}
 
 	@Test
@@ -1051,9 +1013,9 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testInclude() throws IOException {
-		Files.write(temporaryDirectory.resolve("testInclude.asm"), Arrays.asList(
-			" ld a,a"
-		));
+		Files.write( temporaryDirectory.resolve("testInclude.asm"), List.of(
+                " ld a,a"
+                                                                           ) );
 
 		assertArrayEquals(b(0x00, 0x7F, 0xFF), assemble(
 			" nop",
@@ -1064,9 +1026,9 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testIncludeLabel() throws IOException {
-		Files.write(temporaryDirectory.resolve("testIncludeLabel.asm"), Arrays.asList(
-			"test: ld a,a"
-		));
+		Files.write( temporaryDirectory.resolve("testIncludeLabel.asm"), List.of(
+                "test: ld a,a"
+                                                                                ) );
 
 		assertArrayEquals(b(0x00, 0x7F, 0xC3, 0x01, 0x00), assemble(
 			" nop",
@@ -1077,9 +1039,9 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testIncludeLabel2() throws IOException {
-		Files.write(temporaryDirectory.resolve("testIncludeLabel2.asm"), Arrays.asList(
-			" ld a,a"
-		));
+		Files.write( temporaryDirectory.resolve("testIncludeLabel2.asm"), List.of(
+                " ld a,a"
+                                                                                 ) );
 
 		assertArrayEquals(b(0x00, 0x7F, 0xC3, 0x01, 0x00), assemble(
 			" nop",
@@ -1106,9 +1068,9 @@ public class SourceTest extends TestBase {
 
 	@Test
 	public void testIncludeInRepeat() throws IOException {
-		Files.write(temporaryDirectory.resolve("testIncludeRept.asm"), Arrays.asList(
-			"test: db test"
-		));
+		Files.write( temporaryDirectory.resolve("testIncludeRept.asm"), List.of(
+                "test: db test"
+                                                                               ) );
 
 		assertArrayEquals(b(0x00, 0x01, 0x02), assemble(
 			" REPT 3",
@@ -1128,7 +1090,7 @@ public class SourceTest extends TestBase {
 	static Path temporaryDirectory;
 
 	public byte[] assemble(String... sourceLines) {
-		SourceBuilder sourceBuilder = new SourceBuilder(Arrays.asList(temporaryDirectory));
+		SourceBuilder sourceBuilder = new SourceBuilder( Collections.singletonList( temporaryDirectory ) );
 		Source source = sourceBuilder.parse(new SourceFile(String.join("\n", sourceLines)));
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {

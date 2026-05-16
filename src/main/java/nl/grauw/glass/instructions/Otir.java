@@ -16,7 +16,7 @@ public class Otir extends InstructionFactory {
 
 	public static class Otir_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Otir_(Scope context) {
 			super(context);

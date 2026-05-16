@@ -16,7 +16,7 @@ public class Daa extends InstructionFactory {
 
 	public static class Daa_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Daa_(Scope context) {
 			super(context);

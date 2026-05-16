@@ -32,9 +32,8 @@ public class Macro extends InstructionFactory {
 					!(parameter instanceof Equals && ((Equals)parameter).getTerm1() instanceof Identifier))
 				throw new ArgumentException("Parameter must be an identifier.");
 
-			if (parameter instanceof Equals) {
-				Equals equals = (Equals)parameter;
-				parameterScope.addSymbol(((Identifier)equals.getTerm1()).getName(), equals.getTerm2());
+			if ( parameter instanceof Equals equals ) {
+                parameterScope.addSymbol(((Identifier)equals.getTerm1()).getName(), equals.getTerm2());
 			} else {
 				parameterScope.addSymbol(((Identifier)parameter).getName(), IntegerLiteral.ZERO);
 			}

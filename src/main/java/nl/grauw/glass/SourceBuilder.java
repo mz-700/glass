@@ -37,7 +37,7 @@ public class SourceBuilder {
 	private final List<String> terminators;
 	private final List<Path> includePaths;
 
-	private static final List<SourceFile> sourceFiles = new ArrayList<SourceFile>();
+	private static final List<SourceFile> sourceFiles = new ArrayList<>();
 
 	public SourceBuilder(List<Path> includePaths) {
 		this(new Scope(new GlobalScope()), includePaths);
@@ -64,7 +64,7 @@ public class SourceBuilder {
 	}
 
 	private List<Path> getIncludePaths(SourceFile sourceFile) {
-		List<Path> basePaths = new ArrayList<Path>();
+		List<Path> basePaths = new ArrayList<>();
 		Path path = sourceFile.getPath();
 		if (path != null)
 			basePaths.add(path.resolveSibling(path.getFileSystem().getPath("")));
@@ -159,8 +159,10 @@ public class SourceBuilder {
 		case "endif":
 		case "ENDIF":
 			if (!terminators.contains(line.getMnemonic())) {
-				if (line.getMnemonic() == "end" || line.getMnemonic() == "END")
-					throw new AssemblyException("Unexpected end of file. Expecting: " + terminators.toString());
+				if ( line.getMnemonic()
+                         .equals( "end" ) || line.getMnemonic()
+                                                 .equals( "END" ) )
+					throw new AssemblyException( "Unexpected end of file. Expecting: " + terminators );
 				throw new AssemblyException("Unexpected " + line.getMnemonic() + ".");
 			}
 			return new Terminator();

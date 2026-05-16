@@ -17,7 +17,7 @@ public class Db extends InstructionFactory {
 
 	public static class Db_N extends InstructionObject {
 
-		private List<Expression> arguments;
+		private final List<Expression> arguments;
 
 		public Db_N(Scope context, List<Expression> arguments) {
 			super(context);

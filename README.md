@@ -43,6 +43,10 @@ Options:
     
   * `-L list_file` File to output a listing of the assembled code to.
 
+  * `-D debug_file` File to output debug information to. The first section
+    lists labels as `LABEL: file path,line number,type`, where type is `DS`,
+    `DC`, `EQU`, or `LABEL`.
+
 Note that [Java 8](http://java.com/getjava) must be installed to run Glass.
 To check your Java version, invoke the `java -version` command.
 

@@ -10,8 +10,8 @@ import nl.grauw.glass.expressions.Schema;
 
 public class Include extends InstructionFactory {
 
-	public static Schema ARGUMENTS = new Schema(Schema.STRING);
-	public static Schema ARGUMENTS_ONCE = new Schema(new Schema.IsAnnotation(Schema.STRING));
+	public static final Schema ARGUMENTS = new Schema( Schema.STRING);
+	public static final Schema ARGUMENTS_ONCE = new Schema( new Schema.IsAnnotation( Schema.STRING));
 
 	private final Source source;
 

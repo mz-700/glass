@@ -1,5 +1,6 @@
 package nl.grauw.glass;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -105,9 +106,9 @@ public class Scope implements Context {
 	}
 
 	public class SymbolNotFoundException extends EvaluationException {
-		private static final long serialVersionUID = 1L;
+		@Serial private static final long serialVersionUID = 1L;
 
-		private String name;
+		private final String name;
 
 		public SymbolNotFoundException(String name) {
 			super("Symbol not found: " + name);
@@ -124,7 +125,7 @@ public class Scope implements Context {
 	}
 
 	public String serializeSymbols() {
-		return serializeSymbols("", new SingleLinkedList<Scope>(this, null));
+		return serializeSymbols("", new SingleLinkedList<>( this, null ) );
 	}
 
 	public String serializeSymbols(String namePrefix, SingleLinkedList<Scope> breadcrumbs) {
@@ -135,7 +136,10 @@ public class Scope implements Context {
 			Expression value = entry.getValue();
 			if (value.is(Type.INTEGER)) {
 				try {
-					builder.append(name + ": equ " + value.getHexValue() + "\n");
+					builder.append( name )
+                           .append( ": equ " )
+                           .append( value.getHexValue() )
+                           .append( "\n" );
 				} catch (EvaluationException e) {
 					// ignore
 				}
@@ -144,7 +148,7 @@ public class Scope implements Context {
 				try {
 					Scope context = (Scope)value.getContext();
 					if (!breadcrumbs.contains(context)) {
-						builder.append(context.serializeSymbols(name + ".", new SingleLinkedList<Scope>(context, breadcrumbs)));
+						builder.append(context.serializeSymbols(name + ".", new SingleLinkedList<>( context, breadcrumbs ) ) );
 					}
 				} catch (EvaluationException e) {
 					// ignore
@@ -159,8 +163,8 @@ public class Scope implements Context {
 	}
 
 	private static class SingleLinkedList<T> {
-		private T head;
-		private SingleLinkedList<T> tail;
+		private final T head;
+		private final SingleLinkedList<T> tail;
 		public SingleLinkedList(T head, SingleLinkedList<T> tail) {
 			this.head = head;
 			this.tail = tail;

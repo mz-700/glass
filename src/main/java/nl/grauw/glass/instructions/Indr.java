@@ -16,7 +16,7 @@ public class Indr extends InstructionFactory {
 
 	public static class Indr_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Indr_(Scope context) {
 			super(context);

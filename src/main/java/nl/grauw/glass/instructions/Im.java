@@ -16,9 +16,9 @@ public class Im extends InstructionFactory {
 
 	public static class Im_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Im_N(Scope context, Expression argument) {
 			super(context);

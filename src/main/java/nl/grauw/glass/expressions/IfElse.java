@@ -45,7 +45,7 @@ public class IfElse extends Passthrough {
 
 	@Override
 	public String toString() {
-		return "" + condition + " ? " + trueTerm + " : " + falseTerm;
+		return condition + " ? " + trueTerm + " : " + falseTerm;
 	}
 
 	@Override

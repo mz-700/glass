@@ -16,7 +16,7 @@ public class Cpi extends InstructionFactory {
 
 	public static class Cpi_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Cpi_(Scope context) {
 			super(context);

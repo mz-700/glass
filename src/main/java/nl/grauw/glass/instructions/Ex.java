@@ -20,7 +20,7 @@ public class Ex extends InstructionFactory {
 
 	public static class Ex_AF extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_AF, Schema.DIRECT_AF_);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_AF, Schema.DIRECT_AF_);
 
 		public Ex_AF(Scope context) {
 			super(context);
@@ -40,7 +40,7 @@ public class Ex extends InstructionFactory {
 
 	public static class Ex_DE_HL extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_DE, Schema.DIRECT_HL);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_DE, Schema.DIRECT_HL);
 
 		public Ex_DE_HL(Scope context) {
 			super(context);
@@ -60,9 +60,9 @@ public class Ex extends InstructionFactory {
 
 	public static class Ex_SP extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.INDIRECT_SP, Schema.DIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.INDIRECT_SP, Schema.DIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Ex_SP(Scope context, Expression argument) {
 			super(context);

@@ -16,7 +16,7 @@ public class Cpl extends InstructionFactory {
 
 	public static class Cpl_ extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema();
+		public static final Schema ARGUMENTS = new Schema();
 
 		public Cpl_(Scope context) {
 			super(context);

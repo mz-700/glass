@@ -32,7 +32,7 @@ public class Member extends Passthrough {
 
 	@Override
 	public String toString() {
-		return "" + object + "." + subject;
+		return object + "." + subject;
 	}
 
 	public String toDebugString() {

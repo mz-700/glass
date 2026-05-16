@@ -2,14 +2,14 @@ package nl.grauw.glass.expressions;
 
 public class Flag extends Expression {
 
-	public static Flag NZ = new Flag("nz", 0);
-	public static Flag Z = new Flag("z", 1);
-	public static Flag NC = new Flag("nc", 2);
-	public static Flag C = new Flag("c", 3);
-	public static Flag PO = new Flag("po", 4);
-	public static Flag PE = new Flag("pe", 5);
-	public static Flag P = new Flag("p", 6);
-	public static Flag M = new Flag("m", 7);
+	public static final Flag NZ = new Flag( "nz", 0);
+	public static final Flag Z = new Flag( "z", 1);
+	public static final Flag NC = new Flag( "nc", 2);
+	public static final Flag C = new Flag( "c", 3);
+	public static final Flag PO = new Flag( "po", 4);
+	public static final Flag PE = new Flag( "pe", 5);
+	public static final Flag P = new Flag( "p", 6);
+	public static final Flag M = new Flag( "m", 7);
 
 	private final String name;
 	private final int code;
@@ -51,33 +51,17 @@ public class Flag extends Expression {
 	}
 
 	public static Flag getByName(String name) {
-		switch (name) {
-		case "nz":
-		case "NZ":
-			return Flag.NZ;
-		case "z":
-		case "Z":
-			return Flag.Z;
-		case "nc":
-		case "NC":
-			return Flag.NC;
-		case "c":
-		case "C":
-			return Flag.C;
-		case "po":
-		case "PO":
-			return Flag.PO;
-		case "pe":
-		case "PE":
-			return Flag.PE;
-		case "p":
-		case "P":
-			return Flag.P;
-		case "m":
-		case "M":
-			return Flag.M;
-		}
-		return null;
-	}
+        return switch ( name ) {
+            case "nz", "NZ" -> Flag.NZ;
+            case "z", "Z" -> Flag.Z;
+            case "nc", "NC" -> Flag.NC;
+            case "c", "C" -> Flag.C;
+            case "po", "PO" -> Flag.PO;
+            case "pe", "PE" -> Flag.PE;
+            case "p", "P" -> Flag.P;
+            case "m", "M" -> Flag.M;
+            default -> null;
+        };
+    }
 
 }

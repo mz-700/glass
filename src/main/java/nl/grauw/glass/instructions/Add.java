@@ -21,9 +21,9 @@ public class Add extends InstructionFactory {
 
 	public static class Add_A_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Add_A_R(Scope context, Expression arguments) {
 			super(context);
@@ -45,9 +45,9 @@ public class Add extends InstructionFactory {
 
 	public static class Add_A_N extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_A, Schema.DIRECT_N);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_A, Schema.DIRECT_N);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Add_A_N(Scope context, Expression arguments) {
 			super(context);
@@ -68,10 +68,10 @@ public class Add extends InstructionFactory {
 
 	public static class Add_HL_RR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_HL_IX_IY, Schema.DIRECT_RR_INDEX);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_HL_IX_IY, Schema.DIRECT_RR_INDEX);
 
-		private Register register1;
-		private Register register2;
+		private final Register register1;
+		private final Register register2;
 
 		public Add_HL_RR(Scope context, Register register1, Register register2) {
 			super(context);

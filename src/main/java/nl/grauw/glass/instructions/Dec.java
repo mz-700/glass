@@ -19,9 +19,9 @@ public class Dec extends InstructionFactory {
 
 	public static class Dec_R extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_R_INDIRECT_HL_IX_IY);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Dec_R(Scope context, Expression arguments) {
 			super(context);
@@ -43,9 +43,9 @@ public class Dec extends InstructionFactory {
 
 	public static class Dec_RR extends InstructionObject {
 
-		public static Schema ARGUMENTS = new Schema(Schema.DIRECT_RR_INDEX);
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_RR_INDEX);
 
-		private Expression argument;
+		private final Expression argument;
 
 		public Dec_RR(Scope context, Expression arguments) {
 			super(context);

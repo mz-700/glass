@@ -2,8 +2,10 @@ package nl.grauw.glass.expressions;
 
 import nl.grauw.glass.AssemblyException;
 
+import java.io.Serial;
+
 public class EvaluationException extends AssemblyException {
-	private static final long serialVersionUID = 1L;
+	@Serial private static final long serialVersionUID = 1L;
 
 	public EvaluationException() {
 		super();
