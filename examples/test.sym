@@ -1,0 +1,13 @@
+BLOP: equ 125FH
+CLS: equ 124BH
+CLS.clsloop: equ 1255H
+COLORS: equ 0D800H
+INIT: equ 123BH
+LOOP: equ 1244H
+PRINT: equ 1234H
+SCREEN: equ 0D000H
+SET_MEM: equ 0F000H
+SET_MEM2: equ 0E010H
+ZORRO: equ 0D064H
+text: equ 1263H
+zobiol: equ 1270H

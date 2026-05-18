@@ -1,0 +1,86 @@
+    MZF_TITLE This is a test
+    MZF_LOAD $1200
+    MZF_START $2000
+    MZF_COMMENTS Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+
+    org $1200
+    
+    MZ_DISP "abcdefghijklmnopqrstuvwxyz"
+    MZ_ASC "abcdefghijklmnopqrstuvwxyz"
+    
+    include "include.z80"    
+    
+SCREEN: equ $D000
+COLORS: equ $D800
+ZORRO:  equ SCREEN + 100
+
+INIT:
+    CALL CLS
+    LD  HL,text
+    LD  DE,SCREEN
+
+LOOP:    LD  A,(HL)
+    LD  (DE),A
+    INC  DE
+    INC  HL
+    JR   NZ,LOOP
+    HALT
+    
+CLS: PROC
+    LD  HL,COLORS
+    LD  DE,SCREEN
+    LD  B,100
+    LD  A,0
+clsloop:
+    LD  (DE),A
+    INC  DE
+    INC  HL
+    DEC  B
+    JR   NZ,clsloop
+    RET
+    ENDP
+
+    JP  SET_MEM
+    
+    PHASE $3000,10
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+
+    NOP
+    DEPHASE
+        
+            
+                
+    
+    
+    BANK_C
+SET_MEM:
+    LD A,$FF
+    LD  ($C100),A
+    RET                    
+    END_BANK
+
+    
+    BANK_B    
+SET_MEM2:
+    LD  HL,SET_MEM2
+    LD A,$FF
+    LD  ($C100),A
+    RET                    
+    END_BANK
+    
+    
+BLOP:
+    LD  HL,BLOP
+    RET
+   
+        
+text: db "Hello World!",0
+zobiol: DW $1234,$5678

@@ -6,3 +6,7 @@
 /.settings/
 /.vscode/
 .DS_Store
+/out
+/lib
+/.idea
+*.iml

@@ -1,0 +1,98 @@
+# source: test.z80
+   1	0000					    MZF_TITLE This is a test
+   2	0000					    MZF_LOAD $1200
+   3	0000					    MZF_START $2000
+   4	0000					    MZF_COMMENTS Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+   5	0000					
+   6	0000					
+   7	0000					    org $1200
+   8	1200					    
+   9	1200	81	82	83	84	85	86	87	88	89	8A	8B	8C	8D	8E	8F	90	91	92	93	94	95	96	97	98	99	9A	    MZ_DISP "abcdefghijklmnopqrstuvwxyz"
+  10	121A	A1	9A	9F	9C	92	AA	97	98	A6	AF	A9	B8	B3	B0	B7	9E	A0	9D	A4	96	A5	AB	A3	9B	BD	A2	    MZ_ASC "abcdefghijklmnopqrstuvwxyz"
+  11	1234					    
+  12	1234					    include "include.z80"    
+# source: include.z80
+   1	1234					
+   2	1234					PRINT:
+   3	1234	7E				    LD  A,(HL)
+   4	1235	23				    INC HL
+   5	1236	FE	20			    CP  ' '
+   6	1238	20	FA			    JR  NZ,PRINT
+   7	123A	C9				    RET
+   8	123B					
+# source: test.z80
+  13	123B					    
+  14	123B					SCREEN: equ $D000
+  15	123B					COLORS: equ $D800
+  16	123B					ZORRO:  equ SCREEN + 100
+  17	123B					
+  18	123B					INIT:
+  19	123B	CD	4B	12		    CALL CLS
+  20	123E	21	63	12		    LD  HL,text
+  21	1241	11	00	D0		    LD  DE,SCREEN
+  22	1244					
+  23	1244	7E				LOOP:    LD  A,(HL)
+  24	1245	12				    LD  (DE),A
+  25	1246	13				    INC  DE
+  26	1247	23				    INC  HL
+  27	1248	20	FA			    JR   NZ,LOOP
+  28	124A	76				    HALT
+  29	124B					    
+  30	124B					CLS: PROC
+  31	124B	21	00	D8		    LD  HL,COLORS
+  32	124E	11	00	D0		    LD  DE,SCREEN
+  33	1251	06	64			    LD  B,100
+  34	1253	3E	00			    LD  A,0
+  35	1255					clsloop:
+  36	1255	12				    LD  (DE),A
+  37	1256	13				    INC  DE
+  38	1257	23				    INC  HL
+  39	1258	05				    DEC  B
+  40	1259	20	FA			    JR   NZ,clsloop
+  41	125B	C9				    RET
+  42	125C					    ENDP
+  43	125C					
+  44	125C	C3	00	F0		    JP  SET_MEM
+  45	125F					    
+  46	125F					    PHASE $3000,10
+  47	3000	00				    NOP
+  48	3001	00				    NOP
+  49	3002	00				    NOP
+  50	3003	00				    NOP
+  51	3004	00				    NOP
+  52	3005	00				    NOP
+  53	3006	00				    NOP
+  54	3007	00				    NOP
+  55	3008					
+  56	3008	00				    NOP
+  57	3009					    DEPHASE
+  58	125F					        
+  59	125F					            
+  60	125F					                
+  61	125F					    
+  62	125F					    
+  63	125F					    BANK_C
+  64	F000					SET_MEM:
+  65	F000	3E	FF			    LD A,$FF
+  66	F002	32	00	C1		    LD  ($C100),A
+  67	F005	C9				    RET                    
+  68	F006					    END_BANK
+  69	125F					
+  70	125F					    
+  71	125F					    BANK_B    
+  72	E010					SET_MEM2:
+  73	E010	21	10	E0		    LD  HL,SET_MEM2
+  74	E013	3E	FF			    LD A,$FF
+  75	E015	32	00	C1		    LD  ($C100),A
+  76	E018	C9				    RET                    
+  77	E019					    END_BANK
+  78	125F					    
+  79	125F					    
+  80	125F					BLOP:
+  81	125F	21	5F	12		    LD  HL,BLOP
+  82	1262	C9				    RET
+  83	1263					   
+  84	1263					        
+  85	1263	48	65	6C	6C	6F	20	57	6F	72	6C	64	21	00	text: db "Hello World!",0
+  86	1270	34	12	78	56	zobiol: DW $1234,$5678
+  87	1274					
