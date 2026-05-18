@@ -123,6 +123,157 @@ public class SourceTest extends TestBase {
 	}
 
 	@Test
+	public void testPhase() {
+		assertArrayEquals(b(
+				0x00,
+				0x00,
+				0x21, 0x00, 0x30,
+				0x01, 0x02, 0x12
+			), assemble(
+				" org 1200H",
+				" nop",
+				" nop",
+				" PHASE 3000H",
+				"LABEL:",
+				" ld hl,LABEL",
+				" DEPHASE",
+				"LABEL2:",
+				" ld bc,LABEL2"
+			)
+		);
+	}
+
+	@Test
+	public void testPhaseSelfAddress() {
+		assertArrayEquals(b(0x21, 0x00, 0x30), assemble(
+			" org 1200H",
+			" phase 3000H",
+			" ld hl,$",
+			" dephase"
+		));
+	}
+
+	@Test
+	public void testPhaseSize() {
+		assertArrayEquals(b(0x00, 0x00, 0x00), assemble(
+			" phase 3000H,3",
+			" nop",
+			" nop",
+			" nop",
+			" dephase"
+		));
+	}
+
+	@Test
+	public void testPhaseSizeExceeded() {
+		assertAssemblyException(3, () -> assemble(
+			" phase 3000H,2",
+			" nop",
+			" nop",
+			" nop",
+			" dephase"
+		));
+	}
+
+	@Test
+	public void testPhaseSizeFitsAddressSpace() {
+		assertArrayEquals(b(), assemble(
+			" phase 0FFF0H,10H",
+			" dephase"
+		));
+	}
+
+	@Test
+	public void testPhaseSizeExceedsAddressSpace() {
+		assertAssemblyException(0, () -> assemble(
+			" phase 0FFF0H,11H",
+			" dephase"
+		));
+	}
+
+	@Test
+	public void testBankPhaseAliases() {
+		assertArrayEquals(b(
+				0x21, 0x00, 0xD0,
+				0x21, 0x10, 0xE0,
+				0x21, 0x00, 0xF0
+			), assemble(
+				" BANK_A",
+				" ld hl,$",
+				" END_BANK",
+				" BANK_B",
+				" ld hl,$",
+				" END_BANK",
+				" BANK_C",
+				" ld hl,$",
+				" END_BANK"
+			)
+		);
+	}
+
+	@Test
+	public void testBankPhaseSize() {
+		assertArrayEquals(b(0x00, 0x00), assemble(
+			" BANK_A 2",
+			" nop",
+			" nop",
+			" END_BANK"
+		));
+	}
+
+	@Test
+	public void testBankPhaseSizeExceeded() {
+		assertAssemblyException(3, () -> assemble(
+			" BANK_A 2",
+			" nop",
+			" nop",
+			" nop",
+			" END_BANK"
+		));
+	}
+
+	@Test
+	public void testBankPhaseSizeOff() {
+		assertArrayEquals(b(0x00, 0x00, 0x00), assemble(
+			" BANK_A SIZE_OFF",
+			" nop",
+			" nop",
+			" nop",
+			" END_BANK"
+		));
+	}
+
+	@Test
+	public void testBankBDefaultSizeFitsAddressSpace() {
+		assertArrayEquals(b(), assemble(
+			" BANK_B",
+			" END_BANK"
+		));
+	}
+
+	@Test
+	public void testBankBSizeExceedsAddressSpace() {
+		assertAssemblyException(0, () -> assemble(
+			" BANK_B 8177",
+			" END_BANK"
+		));
+	}
+
+	@Test
+	public void testPhaseWithoutDephase() {
+		assertAssemblyException(0, () -> assemble(
+			" phase 3000H"
+		));
+	}
+
+	@Test
+	public void testDephaseWithoutPhase() {
+		assertAssemblyException(0, () -> assemble(
+			" dephase"
+		));
+	}
+
+	@Test
 	public void testRelativeJumpAssembly() {
 		assertArrayEquals(b(0x18, 0x05, 0x28, 0x03, 0x10, 0x01, 0x00), assemble(
 			" org 100H",

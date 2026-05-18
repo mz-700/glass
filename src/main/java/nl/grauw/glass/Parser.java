@@ -160,10 +160,11 @@ public class Parser {
 				accumulator.setLength(0);
 				return statementStartState;
 			} else {
-				lineBuilder.setMnemonic(accumulator.toString());
+				String mnemonic = accumulator.toString();
+				lineBuilder.setMnemonic(mnemonic);
 				accumulator.setLength(0);
 				if (isWhitespace(character)) {
-					return argumentStartState;
+					return isRawArgumentMnemonic(mnemonic) ? rawArgumentStartState : argumentStartState;
 				} else if (character == ';') {
 					return commentReadState;
 				} else if (character == '\n' || character == '\0') {
@@ -171,6 +172,40 @@ public class Parser {
 				}
 			}
 			throw new SyntaxError();
+		}
+	}
+
+	private boolean isRawArgumentMnemonic(String mnemonic) {
+		return "mzf_title".equals(mnemonic) || "MZF_TITLE".equals(mnemonic) ||
+				"mzf_comments".equals(mnemonic) || "MZF_COMMENTS".equals(mnemonic);
+	}
+
+	private final RawArgumentStartState rawArgumentStartState = new RawArgumentStartState();
+	private class RawArgumentStartState extends State {
+		public State parse(char character) {
+			if (isWhitespace(character)) {
+				return rawArgumentStartState;
+			} else {
+				return rawArgumentReadState.parse(character);
+			}
+		}
+	}
+
+	private final RawArgumentReadState rawArgumentReadState = new RawArgumentReadState();
+	private class RawArgumentReadState extends State {
+		public State parse(char character) {
+			if (character == ';') {
+				lineBuilder.setArguments(new StringLiteral(accumulator.toString().trim()));
+				accumulator.setLength(0);
+				return commentReadState;
+			} else if (character == '\n' || character == '\0') {
+				lineBuilder.setArguments(new StringLiteral(accumulator.toString().trim()));
+				accumulator.setLength(0);
+				return labelStartState;
+			} else {
+				accumulator.append(character);
+				return rawArgumentReadState;
+			}
 		}
 	}
 

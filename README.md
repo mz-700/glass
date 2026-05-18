@@ -47,6 +47,9 @@ Options:
     lists labels as `LABEL: file path,line number,type`, where type is `DS`,
     `DC`, `EQU`, or `LABEL`.
 
+  * `-O type` Output type. Supported values are `BIN` for a raw binary file
+    (the default), and `MZF` for a Sharp MZ-700 program file.
+
 Note that [Java 8](http://java.com/getjava) must be installed to run Glass.
 To check your Java version, invoke the `java -version` command.
 
@@ -111,6 +114,16 @@ Parentheses are used to indicate indirection.
   * Define byte: `db`
     
     Defines a byte or a sequence of bytes.
+
+  * Define MZ-700 text: `mz_asc`
+    
+    Defines bytes like `db`, but maps lowercase ASCII characters to the
+    Sharp MZ-700 lowercase character codes.
+
+  * Define MZ-700 display text: `mz_disp`
+    
+    Defines bytes like `mz_asc`, but maps characters to the display codes used
+    when writing directly to video memory.
     
   * Define word: `dw`
     
@@ -139,6 +152,45 @@ Directives
     statements.
     
         org 0100H
+
+  * Phase: `phase`, `dephase`
+    
+    Temporarily changes the address location counter for symbols and `$`,
+    without advancing the surrounding address location counter. Object code is
+    still emitted at the current output position. An optional second argument
+    specifies the maximum phased address span before `dephase`.
+    
+        org 1200H
+        nop
+        nop
+        phase 3000H
+    label:
+        ld hl,label
+        dephase
+    label2:
+        ld bc,label2
+
+        phase 3000H,100H
+        ; phased code here must fit in 100H bytes
+        dephase
+
+    `bank_a`, `bank_b`, and `bank_c` are aliases for phased blocks starting at
+    `0D000H`, `0E010H`, and `0F000H`, respectively. `bank_a` and `bank_c`
+    default to a maximum size of 4096 bytes, and `bank_b` defaults to 4080
+    bytes. A numeric argument overrides the default size, and `size_off`
+    disables the size limit. `end_bank` is an alias for `dephase`.
+
+  * MZF output metadata: `mzf_title`, `mzf_load`, `mzf_start`, `mzf_comments`
+    
+    Specifies metadata for `-O MZF` output. `mzf_load` is required. `mzf_start`
+    defaults to the load address, `mzf_title` defaults to `TITLE`, and
+    `mzf_comments` defaults to an empty field. If these directives appear
+    multiple times, the last value is used.
+    
+        mzf_title the game!
+        mzf_load 1200H
+        mzf_start 1200H
+        mzf_comments comments
     
   * Assign constant: `equ`
     

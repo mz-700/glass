@@ -1,6 +1,7 @@
 package nl.grauw.glass;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Assembler {
 
     private final Source source;
+	private static final int MZF_HEADER_SIZE = 128;
 
 	/**
      */
@@ -33,6 +35,7 @@ public class Assembler {
 		Path symbolPath = null;
 		Path listPath = null;
 		Path debugPath = null;
+		OutputType outputType = OutputType.BIN;
 		List<Path> includePaths = new ArrayList<>();
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-I")) {
@@ -47,6 +50,10 @@ public class Assembler {
 				if (++i >= args.length)
 					throw new AssemblyException("Missing argument value.");
 				debugPath = Paths.get(args[i]);
+			} else if (args[i].equals("-O")) {
+				if (++i >= args.length)
+					throw new AssemblyException("Missing argument value.");
+				outputType = OutputType.parse(args[i]);
 			} else if (sourcePath == null) {
 				sourcePath = Paths.get(args[i]);
 			} else if (objectPath == null) {
@@ -59,7 +66,9 @@ public class Assembler {
 		}
 
 		Assembler instance = new Assembler( sourcePath, includePaths );
-		instance.writeObject( objectPath );
+		if (outputType == OutputType.MZF)
+			objectPath = withMzfExtension(objectPath);
+		instance.writeObject( objectPath, outputType );
 		if (debugPath != null)
 			instance.writeDebug( debugPath );
 		if (symbolPath != null)
@@ -73,11 +82,65 @@ public class Assembler {
 	}
 
 	public void writeObject(Path objectPath) {
+		writeObject(objectPath, OutputType.BIN);
+	}
+
+	public void writeObject(Path objectPath, OutputType outputType) {
 		try (OutputStream output = objectPath != null ? createBufferedOutputStream(objectPath) : new NullOutputStream()) {
-			source.assemble(output);
+			byte[] object = assemble();
+			if (outputType == OutputType.MZF)
+				object = createMzfObject(object);
+			output.write(object, 0, object.length);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private byte[] assemble() throws IOException {
+		try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+			source.assemble(output);
+			return output.toByteArray();
+		}
+	}
+
+	private byte[] createMzfObject(byte[] object) {
+		Source.MzfConfig mzfConfig = source.getMzfConfig();
+		if (!mzfConfig.hasLoadAddress())
+			throw new AssemblyException("MZF_LOAD is required for MZF output.");
+
+		int size = MZF_HEADER_SIZE + object.length;
+		checkWord("MZF size", size);
+		checkWord("MZF_LOAD", mzfConfig.getLoadAddress());
+		checkWord("MZF_START", mzfConfig.getStartAddress());
+
+		byte[] mzfObject = new byte[size];
+		mzfObject[0] = 1;
+		writeTextField(mzfObject, 1, 17, mzfConfig.getTitle(), true);
+		writeWord(mzfObject, 18, size);
+		writeWord(mzfObject, 20, mzfConfig.getLoadAddress());
+		writeWord(mzfObject, 22, mzfConfig.getStartAddress());
+		writeTextField(mzfObject, 24, 104, mzfConfig.getComments(), false);
+		System.arraycopy(object, 0, mzfObject, MZF_HEADER_SIZE, object.length);
+		return mzfObject;
+	}
+
+	private void writeTextField(byte[] output, int offset, int length, String text, boolean terminate) {
+		int maxTextLength = terminate ? length - 1 : length;
+		int copyLength = Math.min(text.length(), maxTextLength);
+		for (int i = 0; i < copyLength; i++)
+			output[offset + i] = Mz700Charset.encode(text.charAt(i));
+		if (terminate)
+			output[offset + copyLength] = 0x0D;
+	}
+
+	private void writeWord(byte[] output, int offset, int value) {
+		output[offset] = (byte)value;
+		output[offset + 1] = (byte)(value >> 8);
+	}
+
+	private void checkWord(String field, int value) {
+		if (value < 0 || value > 0xFFFF)
+			throw new AssemblyException(field + " out of range: " + value);
 	}
 
 	public void writeSymbols(Path symbolPath) {
@@ -108,10 +171,33 @@ public class Assembler {
 		return new BufferedOutputStream(Files.newOutputStream(path), 0x10000);
 	}
 
+	private static Path withMzfExtension(Path path) {
+		if (path == null)
+			return null;
+		String fileName = path.getFileName().toString();
+		int extensionIndex = fileName.lastIndexOf('.');
+		String mzfFileName = (extensionIndex != -1 ? fileName.substring(0, extensionIndex) : fileName) + ".mzf";
+		Path parent = path.getParent();
+		return parent != null ? parent.resolve(mzfFileName) : Paths.get(mzfFileName);
+	}
+
 	public static class NullOutputStream extends OutputStream {
 		public void write(int b) throws IOException {}
 		public void write(byte[] b) throws IOException {}
 		public void write(byte[] b, int off, int len) throws IOException {}
+	}
+
+	public enum OutputType {
+		BIN,
+		MZF;
+
+		public static OutputType parse(String value) {
+			if ("BIN".equals(value))
+				return BIN;
+			if ("MZF".equals(value))
+				return MZF;
+			throw new AssemblyException("Unsupported output type: " + value);
+		}
 	}
 
 }

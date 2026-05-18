@@ -52,6 +52,8 @@ public class GlobalScope extends Scope {
 		addBuiltInSymbol("ldir", new Instruction(new Ldir(), new Scope(this)));
 		addBuiltInSymbol("mulub", new Instruction(new Mulub(), new Scope(this)));
 		addBuiltInSymbol("muluw", new Instruction(new Muluw(), new Scope(this)));
+		addBuiltInSymbol("mz_asc", new Instruction(new MzAsc(), new Scope(this)));
+		addBuiltInSymbol("mz_disp", new Instruction(new MzDisp(), new Scope(this)));
 		addBuiltInSymbol("neg", new Instruction(new Neg(), new Scope(this)));
 		addBuiltInSymbol("nop", new Instruction(new Nop(), new Scope(this)));
 		addBuiltInSymbol("or", new Instruction(new Or(), new Scope(this)));
@@ -88,6 +90,16 @@ public class GlobalScope extends Scope {
 
 		addBuiltInSymbol("equ", new Instruction(new Equ(), new Scope(this)));
 		addBuiltInSymbol("org", new Instruction(new Org(), new Scope(this)));
+		addBuiltInSymbol("phase", new Instruction(new Phase(), new Scope(this)));
+		addBuiltInSymbol("dephase", new Instruction(new Dephase(), new Scope(this)));
+		addBuiltInSymbol("bank_a", new Instruction(new BankPhase(0xD000, 4096), new Scope(this)));
+		addBuiltInSymbol("bank_b", new Instruction(new BankPhase(0xE010, 4080), new Scope(this)));
+		addBuiltInSymbol("bank_c", new Instruction(new BankPhase(0xF000, 4096), new Scope(this)));
+		addBuiltInSymbol("end_bank", new Instruction(new Dephase(), new Scope(this)));
+		addBuiltInSymbol("mzf_title", new Instruction(new MzfTitle(), new Scope(this)));
+		addBuiltInSymbol("mzf_load", new Instruction(new MzfLoad(), new Scope(this)));
+		addBuiltInSymbol("mzf_start", new Instruction(new MzfStart(), new Scope(this)));
+		addBuiltInSymbol("mzf_comments", new Instruction(new MzfComments(), new Scope(this)));
 		addBuiltInSymbol("endm", new Instruction(new Endm(), new Scope(this)));
 		addBuiltInSymbol("endp", new Instruction(new Endp(), new Scope(this)));
 		addBuiltInSymbol("ends", new Instruction(new Ends(), new Scope(this)));
