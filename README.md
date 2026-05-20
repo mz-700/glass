@@ -1,18 +1,14 @@
-Glass Z80 assembler
+MZGlass Z80 assembler
 ===================
-
-Copyright 2013 Laurens Holst
 
 Project information
 -------------------
 
-  * Author: Laurens Holst <laurens@grauw.nl>
-  * Site: <http://www.grauw.nl/projects/glass/>
-  * Source: <https://github.com/grauw/glass>
-  * Support: <https://www.msx.org/forum/msx-talk/development/glass-z80-assembler>
-  * License: Simplified BSD License
+This project is a fork from Glass Assembler. Copyright 2013 Laurens Holst (laurens@grauw.nl).
+The original project is available at <https://github.com/grauw/glass>. The license is [Simplified BSD License](https://opensource.org/license/bsd-2-clause).
 
-Glass is a cross-assembler for the Z80 processor written in Java 8. Its core
+MZGlass is a cross-assembler for the Z80 processor with special features for the Sharp MZ 700.
+It is written in Java 25. Its core
 principles are to be open source, cross-platform, and to provide a standard Z80
 syntax infused with modern language features.
 
@@ -43,14 +39,12 @@ Options:
     
   * `-L list_file` File to output a listing of the assembled code to.
 
-  * `-D debug_file` File to output debug information to. The first section
-    lists labels as `LABEL: file path,line number,type`, where type is `DS`,
-    `DC`, `EQU`, or `LABEL`.
+  * `-D debug_file` File to output debug information to. Information about its format lower.
 
   * `-O type` Output type. Supported values are `BIN` for a raw binary file
     (the default), and `MZF` for a Sharp MZ-700 program file.
 
-Note that [Java 8](http://java.com/getjava) must be installed to run Glass.
+Note that [Java 25](http://java.com/getjava) must be installed to run Glass.
 To check your Java version, invoke the `java -version` command.
 
 Syntax
@@ -146,86 +140,89 @@ Parentheses are used to indicate indirection.
 Directives
 ----------
 
-  * Origin: `org`
-    
-    Changes the address location counter and sets a new origin for subsequent
-    statements.
-    
-        org 0100H
+#### `org`: Origin
+  
+The `org` is the only directive that is not an instruction.
+Changes the address location counter and sets a new origin for subsequent
+statements.
 
-  * Phase: `phase`, `dephase`
+    org $100
+
+#### `phase`, `dephase`: Phased code
     
-    Temporarily changes the address location counter for symbols and `$`,
-    without advancing the surrounding address location counter. Object code is
-    still emitted at the current output position. An optional second argument
-    specifies the maximum phased address span before `dephase`.
+Temporarily changes the address location counter for symbols and `$`,
+without advancing the surrounding address location counter. Object code is
+still emitted at the current output position. An optional second argument
+specifies the maximum phased address span before `dephase`.
     
-        org 1200H
+        org $1200
         nop
         nop
-        phase 3000H
+ 
+        phase $3000
     label:
         ld hl,label
         dephase
+
     label2:
         ld bc,label2
 
-        phase 3000H,100H
-        ; phased code here must fit in 100H bytes
+        phase $3000,$100
+        ; phased code here must fit in $100 bytes
         dephase
 
-    `bank_a`, `bank_b`, and `bank_c` are aliases for phased blocks starting at
-    `0D000H`, `0E010H`, and `0F000H`, respectively. `bank_a` and `bank_c`
-    default to a maximum size of 4096 bytes, and `bank_b` defaults to 4080
-    bytes. A numeric argument overrides the default size, and `size_off`
-    disables the size limit. `end_bank` is an alias for `dephase`.
+#### `bank_a`, `bank_b`, and `bank_c`: use with the Sharp MZ700 ST-110 MMU board
 
-  * MZF output metadata: `mzf_title`, `mzf_load`, `mzf_start`, `mzf_comments`
+These are aliases for phased blocks starting at `$D000`, `$E010`, and `$F000`, respectively.\
+`bank_a` and `bank_c` default to a maximum size of 4096 bytes, and `bank_b` defaults to 4080
+bytes. A numeric argument overrides the default size, and `size_off` disables the size limit.\ 
+`end_bank` is an alias for `dephase`.
+
+#### `mzf_title`, `mzf_load`, `mzf_start`, `mzf_comments`: MZF output metadata
     
-    Specifies metadata for `-O MZF` output. `mzf_load` is required. `mzf_start`
-    defaults to the load address, `mzf_title` defaults to `TITLE`, and
-    `mzf_comments` defaults to an empty field. If these directives appear
-    multiple times, the last value is used.
+Specifies metadata for `-O MZF` output.\
+`mzf_load` is required. `mzf_start` defaults to the load address, `mzf_title` defaults to `TITLE`, and
+`mzf_comments` defaults to an empty field. If these directives appear multiple times, the last value is used.
     
         mzf_title the game!
-        mzf_load 1200H
-        mzf_start 1200H
+        mzf_load $1200
+        mzf_start $1200
         mzf_comments comments
     
-  * Assign constant: `equ`
+#### `equ`: Assign constant
     
-    Assigns a constant value to a symbol.
+Assigns a constant value to a symbol.
     
-        JIFFY: equ 0FC9EH
+        JIFFY: equ $FC9E
     
-  * Include: `include`
+#### `include`: Include
     
-    Includes another source file. The current working directory is searched, as
-    well as any include paths specified on the command line.
+Includes another source file. The current working directory is searched, as
+well as any include paths specified on the command line.
     
         INCLUDE "math.asm"
     
-    Optionally you can specify a `once` annotation to prevent a file from being
-    included more than once. However it is not recommended to use unless needed.
+Optionally you can specify a `once` annotation to prevent a file from being
+included more than once. However it is not recommended to use unless needed.
     
         INCLUDE ONCE "math.asm"
     
-  * Include binary: `incbin`
+#### `incbin`: Include binary
     
-    Includes binary data from a file. The current working directory is searched,
-    as well as any include paths specified on the command line.
+Includes binary data from a file. The current working directory is searched,
+as well as any include paths specified on the command line.
     
         INCBIN "image.ge5"
     
-    Optionally you can specify a start position and length:
+Optionally you can specify a start position and length:
     
         INCBIN "image.ge5",7,212*128
     
-  * Macro: `macro`, `endm`
+#### `macro`, `endm`: Macros
     
-    Defines a macro instruction, composed of all the instructions that follow
-    until the `endm` directive is encountered. The definition’s arguments
-    specify the parameters which are passed when the macro is invoked.
+Defines a macro instruction, composed of all the instructions that follow
+until the `endm` directive is encountered. The definition’s arguments
+specify the parameters which are passed when the macro is invoked.
     
         ALIGN: MACRO ?boundary
                ds ?boundary - 1 - ($ + ?boundary - 1) % ?boundary
@@ -233,23 +230,23 @@ Directives
                
                ALIGN 100H
     
-    All symbols defined in a macro block are local. Symbols in macro instances
-    can be referenced by using the `.` operator. Symbols in macro definitions
-    can also be referenced; the contents are assembled on address 0, effectively
-    turning the inner symbols into offsets. This is useful for specifying
-    structures and indexing.
+All symbols defined in a macro block are local. Symbols in macro instances
+can be referenced by using the `.` operator. Symbols in macro definitions
+can also be referenced; the contents are assembled on address 0, effectively
+turning the inner symbols into offsets. This is useful for specifying
+structures and indexing.
     
-    Default values for macro arguments can be specified with `=`:
+Default values for macro arguments can be specified with `=`:
     
         ALIGN: MACRO ?boundary = 100H
     
-  * Repetition: `rept`, `endm`
+#### `rept`, `endm`: Repetition
     
-    Repeats a section of code a number of times. The end of the section is
-    marked with the `endm` directive. The first argument is mandatory and
-    specifies the number of repeats. The second argument specifies a counter
-    parameter, the third the initial value for the counter (default: 0), and the
-    fourth argument specifies the counter increment (default: 1).
+Repeats a section of code a number of times. The end of the section is
+marked with the `endm` directive. The first argument is mandatory and
+specifies the number of repeats. The second argument specifies a counter
+parameter, the third the initial value for the counter (default: 0), and the
+fourth argument specifies the counter increment (default: 1).
     
         REPT 10, ?counter, 0, 2
         ld bc,(table + ?counter)
@@ -258,28 +255,28 @@ Directives
         ENDM
         ENDM
     
-    All symbols defined in a repeat block are local. If a repeat is labeled,
-    the inner repeat scopes can be accessed by index, e.g.: `mylist.0`.
+All symbols defined in a repeat block are local. If a repeat is labeled,
+the inner repeat scopes can be accessed by index, e.g.: `mylist.0`.
     
-  * Indefinite repetition: `irp`, `endm`
+#### `irp`, `endm`: Indefinite repetition
     
-    Repeats a section of code for each of the arguments specified. The end of
-    the section is marked with the `endm` directive. The first argument is
-    mandatory and specifies the parameter the current repetition’s value is
-    passed to. The remaining arguments are passed one by one as the section is
-    repeated.
+Repeats a section of code for each of the arguments specified. The end of
+the section is marked with the `endm` directive. The first argument is
+mandatory and specifies the parameter the current repetition’s value is
+passed to. The remaining arguments are passed one by one as the section is
+repeated.
     
         IRP ?value, 1, 2, 4, 8, 16, 32, 64, 128
         or ?value
         ENDM
     
-    All symbols defined in a indefinite repeat block are local. If a repeat is
-    labeled, the inner repeat scopes can be accessed by index, e.g.: `mylist.0`.
+All symbols defined in a indefinite repeat block are local. If a repeat is
+labeled, the inner repeat scopes can be accessed by index, e.g.: `mylist.0`.
     
-  * Procedure: `proc`, `endp`
+#### `proc`, `endp`:  Procedure
     
-    Defines a section of code as a procedure. Currently mostly serves to
-    establish a local scope.
+Defines a section of code as a procedure. Currently mostly serves to
+establish a local scope.
     
         shift5: PROC
                 ld b,5
@@ -293,17 +290,17 @@ Directives
                 ret
                 ENDP
     
-    All symbols defined in a procedure block are local. Symbols in inner scopes
-    can be referenced by using the `.` operator.
+All symbols defined in a procedure block are local. Symbols in inner scopes
+can be referenced by using the `.` operator.
     
-  * Condition: `if`, `else`, `endif`
+#### `if`, `else`, `endif`: Condition
     
-    Conditionally assembles a section of code, or an optional alternative
-    section. The end of the section is either marked with `endif`, or with
-    `else` in which case an alternative will follow up to the `endif`. The
-    argument is evaluated as an integer, and if the result is nonzero (true) the
-    first section is assembled, and if the result is zero (false) the
-    alternative is assembled if one is provided.
+Conditionally assembles a section of code, or an optional alternative
+section. The end of the section is either marked with `endif`, or with
+`else` in which case an alternative will follow up to the `endif`. The
+argument is evaluated as an integer, and if the result is nonzero (true) the
+first section is assembled, and if the result is zero (false) the
+alternative is assembled if one is provided.
     
         PAD: MACRO ?address
              IF $ > ?address
@@ -313,32 +310,32 @@ Directives
              ENDIF
              ENDM
     
-  * Source file end: `end`
+#### `end`: Source file end
     
-    Indicates the end of the current source file. Specifying this is optional,
-    and usually omitted. Any content on lines beyond this directive will not be
-    parsed.
+Indicates the end of the current source file. Specifying this is optional,
+and usually omitted. Any content on lines beyond this directive will not be
+parsed.
     
-  * Error: `error`
+#### `error`: Error
     
-    Generates an error and aborts the compilation. Optionally a message can be
-    specified.
+Generates an error and aborts the compilation. Optionally a message can be
+specified.
     
         ERROR "Limit exceeded."
     
-  * Warning: `warning`
+#### `warning`: Warning
     
-    Generates a warning. Optionally a message can be specified.
+Generates a warning. Optionally a message can be specified.
     
         WARNING "Nearly out of space."
     
-  * Section: `section`
+#### `section`: Section
     
-    Defines a section of code or data that will be assembled inside the space of
-    a ds statement. This allows you to have nonadjacent code or data sections
-    and group them into separate regions, such as ROM and RAM pages. The
-    mandatory argument references the DS statement that is the target of the
-    section.
+Defines a section of code or data that will be assembled inside the space of
+a ds statement. This allows you to have nonadjacent code or data sections
+and group them into separate regions, such as ROM and RAM pages. The
+mandatory argument references the DS statement that is the target of the
+section.
     
             org 4000H
         ROM_PAGE1: ds 4000H
@@ -455,18 +452,9 @@ Operator precedence:
 Development information
 -----------------------
 
-Glass is free and open source software. If you want to contribute to the project
+MZGlass is free and open source software. If you want to contribute to the project
 you are very welcome to. Please contact me at any one of the places mentioned in
 the project information section.
 
 You are also free to re-use code for your own projects, provided you abide by
 the license terms.
-
-Glass is written in [Java 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-To check your Java version, invoke the `java -version` command. The project can
-be built using [Maven](https://maven.apache.org/) by invoking the following
-command on the command line:
-
-    mvn verify
-
-The jar binary will be output to the `target` directory.
