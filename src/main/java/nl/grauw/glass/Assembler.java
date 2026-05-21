@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.grauw.glass.SourceFile.SourceFileSpan;
+
 public class Assembler {
 
     private final Source source;
@@ -19,6 +21,15 @@ public class Assembler {
 	/**
      */
 	static void main( String[] args ) {
+		try {
+			run(args);
+		} catch (AssemblyException e) {
+			System.err.println(formatError(e));
+			System.exit(1);
+		}
+	}
+
+	private static void run(String[] args) {
 		if (args.length == 0) {
 			System.out.printf( "%s %s by %s%n",
                                Assembler.class.getPackage().getImplementationTitle(),
@@ -75,6 +86,15 @@ public class Assembler {
 			instance.writeSymbols( symbolPath );
 		if (listPath != null)
 			instance.writeList( listPath );
+	}
+
+	private static String formatError(AssemblyException e) {
+		SourceFileSpan context = !e.getContexts().isEmpty() ? e.getContexts().get(0) : null;
+		String path = context != null && context.getSourceFile().getPath() != null ?
+			context.getSourceFile().getPath().toAbsolutePath().normalize().toString() : "<unknown>";
+		int line = context != null ? context.lineStart + 1 : 1;
+		int column = context != null && context.column != -1 ? context.column + 1 : 1;
+		return path + ":" + line + ":" + column + ": error: " + e.getPlainMessage();
 	}
 
 	public Assembler(Path sourcePath, List<Path> includePaths) {

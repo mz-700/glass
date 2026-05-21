@@ -1,3 +1,5 @@
+; LABELS
+
 PRINT: C:\mz700\software\APP-glass\examples\include.z80,1,LABEL,4660
 SCREEN: C:\mz700\software\APP-glass\examples\test.z80,13,EQU,53248
 COLORS: C:\mz700\software\APP-glass\examples\test.z80,15,EQU,55296
@@ -11,12 +13,18 @@ SET_MEM2: C:\mz700\software\APP-glass\examples\test.z80,72,LABEL,57360
 BLOP: C:\mz700\software\APP-glass\examples\test.z80,78,LABEL,4703
 text: C:\mz700\software\APP-glass\examples\test.z80,83,DC,4707
 zobiol: C:\mz700\software\APP-glass\examples\test.z80,86,DC,4720
+
+; MAP
+
 4608:4660:data
 4660:4707:code
 4707:4724:data
 12288:12297:code
 57360:57369:code
 61440:61446:code
+
+; USAGES
+
 PRINT:4664
 CLS:4667
 text:4670

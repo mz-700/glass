@@ -27,11 +27,13 @@ LOOP:    LD  A,(HL)
     JR   NZ,LOOP
     HALT
     
+    
 CLS: PROC
     LD  HL,COLORS
     LD  DE,SCREEN
     LD  B,100
     LD  A,0
+    LD  DE,HL
 clsloop:
     LD  (DE),A
     INC  DE

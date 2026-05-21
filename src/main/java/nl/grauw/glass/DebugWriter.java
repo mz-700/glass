@@ -34,8 +34,11 @@ public class DebugWriter {
 	}
 
 	public void write(Source source) {
+        output.println("; LABELS\n");
 		writeLabels(source);
+        output.println("\n; MAP\n");
 		writeMap(source);
+        output.println("\n; USAGES\n");
 		writeUsages(source);
 	}
 
