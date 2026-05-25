@@ -40,6 +40,8 @@ public class DebugWriter {
 		writeMap(source);
         output.println("\n; USAGES\n");
 		writeUsages(source);
+        output.println("\n; MACROS\n");
+		writeMacros(source);
 	}
 
 	private void writeLabels(Source source) {
@@ -64,7 +66,18 @@ public class DebugWriter {
 	}
 
 	private String getLabelName(Source source, Line line, String label) {
-		return line.getScope().getParent() != source.getScope() && !label.startsWith(".") ? "." + label : label;
+		if (line.getScope().getParent() == source.getScope() || label.startsWith("."))
+			return label;
+		String ownerName = getScopeOwnerName(source, line);
+		return ownerName != null ? ownerName + "." + label : "." + label;
+	}
+
+	private String getScopeOwnerName(Source source, Line line) {
+		Scope localScope = line.getScope().getParent();
+		Scope parentScope = localScope != null ? localScope.getParent() : null;
+		if (parentScope == null)
+			return null;
+		return parentScope.getLocalSymbolNameForContext(localScope);
 	}
 
 	private void writeExtraFields(Line line, String label) {
@@ -362,9 +375,45 @@ public class DebugWriter {
 	private String getUsageName(Source source, Line line, String name) {
 		if (line.getScope().getParent() != source.getScope() &&
 				line.getScope().getParent().hasLocalSymbol(name) &&
-				!name.startsWith("."))
-			return "." + name;
+				!name.startsWith(".")) {
+			String ownerName = getScopeOwnerName(source, line);
+			return ownerName != null ? ownerName + "." + name : "." + name;
+		}
 		return name;
+	}
+
+	private void writeMacros(Source source) {
+		for (Line line : source.getLines()) {
+			writeLineMacros(line);
+			writeNestedMacros(line);
+		}
+	}
+
+	private void writeLineMacros(Line line) {
+		if (!isMacro(line))
+			return;
+
+		for (String label : line.getLabels()) {
+			output.print(label);
+			output.print(": ");
+			output.print(getPath(line.getSourceSpan()));
+			output.print(",");
+			output.println(line.getSourceSpan().lineStart + 1);
+		}
+	}
+
+	private boolean isMacro(Line line) {
+		String mnemonic = line.getMnemonic();
+		return "macro".equals(mnemonic) || "MACRO".equals(mnemonic);
+	}
+
+	private void writeNestedMacros(Line line) {
+		InstructionObject instructionObject = line.getInstructionObject();
+		if (instructionObject instanceof nl.grauw.glass.instructions.If.IfObject)
+			writeMacros(((nl.grauw.glass.instructions.If.IfObject)instructionObject).getSelectedSource());
+
+		if (line.getInstruction() instanceof nl.grauw.glass.instructions.Section)
+			writeMacros(((nl.grauw.glass.instructions.Section)line.getInstruction()).getSource());
 	}
 
 }

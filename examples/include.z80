@@ -5,3 +5,8 @@ PRINT:
     CP  ' '
     JR  NZ,PRINT
     RET
+    
+LDW: MACRO dest,src
+    PUSH src
+    POP dest
+ENDM    

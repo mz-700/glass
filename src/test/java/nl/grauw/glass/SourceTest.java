@@ -369,7 +369,7 @@ public class SourceTest extends TestBase {
 	@Test
 	public void testMacroNonIdentifierArguments() {
 		assertArgumentException(0, () -> assemble(
-            "test: MACRO (arg)",
+            "test: MACRO (arg + 1)",
             " ENDM"
 ) );
 	}
@@ -535,8 +535,19 @@ public class SourceTest extends TestBase {
 	}
 
 	@Test
-	public void testMacroDefinitionDereference() {
+	public void testStructDefinitionDereference() {
 		assertArrayEquals(b(0x11, 0x03, 0x00), assemble(
+			" ld de,test.test2",
+			"test: STRUCT",
+			" ld hl,test2",
+			"test2:",
+			" ENDSTRUCT"
+		));
+	}
+
+	@Test
+	public void testMacroDefinitionDereferenceNotAvailable() {
+		assertSymbolNotFoundException("test.test2", 0, () -> assemble(
 			" ld de,test.test2",
 			"test: MACRO",
 			" ld hl,test2",
@@ -546,24 +557,13 @@ public class SourceTest extends TestBase {
 	}
 
 	@Test
-	public void testMacroDefinitionWithArgumentsDereference() {
+	public void testStructDefinitionWithEquDereference() {
 		assertArrayEquals(b(0x11, 0x03, 0x00), assemble(
 			" ld de,test.test2",
-			"test: MACRO arg",
-			" ld hl,arg",
-			"test2:",
-			" ENDM"
-		));
-	}
-
-	@Test
-	public void testMacroDefinitionWithDefaultArgumentsDereference() {
-		assertArrayEquals(b(0x11, 0x03, 0x00), assemble(
-			" ld de,test.test2",
-			"test: MACRO arg = 0",
-			" ld hl,arg",
-			"test2:",
-			" ENDM"
+			"test: STRUCT",
+			" db 0",
+			"test2: equ $ + 2",
+			" ENDSTRUCT"
 		));
 	}
 
@@ -581,51 +581,40 @@ public class SourceTest extends TestBase {
 	}
 
 	@Test
-	public void testMacroDefinitionWithNonIntegerArgumentDereferenceWorkaround() {
+	public void testStructDefinitionWithNonIntegerArgumentDereferenceWorkaround() {
 		assertArrayEquals(b(0x11, 0x03, 0x00), assemble(
 			" ld de,test.test2",
-			"test: MACRO arg1, arg2",
-			" ld hl,arg1",
+			"test: STRUCT",
+			" db 0",
 			"test2: equ $",
-			" ret arg2",
-			" ENDM"
+			" db 0",
+			" db 0",
+			" ENDSTRUCT"
 		));
 	}
 
 	@Test
-	public void testMacroDefinitionWithNonIntegerArgumentBeforeDereference() {
-		assertEvaluationException(0, () -> assertArrayEquals( b( 0x11, 0x03, 0x00 ), assemble(
-            " ld de,test.test2",
-            "test: MACRO arg1, arg2",
-            " ld hl,arg1",
-            " ret arg2",
-            "test2:",
-            " ENDM"
-) ) );
-	}
-
-	@Test
-	public void testMacroDefinitionWithDefaultFlagArgumentBeforeDereference() {
+	public void testStructDefinitionWithInstructionBeforeDereference() {
 		assertArrayEquals(b(0x11, 0x01, 0x00), assemble(
 			" ld de,test.test2",
-			"test: MACRO arg = z",
-			" ret arg",
+			"test: STRUCT",
+			" nop",
 			"test2:",
-			" ENDM"
+			" ENDSTRUCT"
 		));
 	}
 
 	@Test
-	public void testMacroContextArgumentDereference() {
+	public void testStructContextArgumentDereference() {
 		assertArrayEquals(b(0x03), assemble(
-			"macro1: MACRO",
+			"struct1: STRUCT",
 			" ld hl,0",
 			"test:",
-			" ENDM",
+			" ENDSTRUCT",
 			"macro2: MACRO ?arg",
 			" db ?arg.test",
 			" ENDM",
-			" macro2 macro1"
+			" macro2 struct1"
 		));
 	}
 

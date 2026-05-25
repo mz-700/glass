@@ -97,6 +97,7 @@ public class Parser {
 					"endm".equals(identifier) || "ENDM".equals(identifier) ||
 					"endp".equals(identifier) || "ENDP".equals(identifier) ||
 					"ends".equals(identifier) || "ENDS".equals(identifier) ||
+					"endstruct".equals(identifier) || "ENDSTRUCT".equals(identifier) ||
 					"else".equals(identifier) || "ELSE".equals(identifier) ||
 					"endif".equals(identifier) || "ENDIF".equals(identifier);
 		}

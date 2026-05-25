@@ -15,10 +15,7 @@ SCREEN: equ $D000
 COLORS: equ $D800
 ZORRO:  equ SCREEN + 100
 
-LDW: MACRO dest,src
-    PUSH src
-    POP dest
-ENDM
+
 
 LDB: MACRO dest,(src)
     PUSH HL

@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import nl.grauw.glass.SourceFile.SourceFileSpan;
 import nl.grauw.glass.instructions.Ds;
+import nl.grauw.glass.instructions.MacroInstruction;
 import nl.grauw.glass.instructions.Section;
 
 public class ListingWriter {
@@ -42,13 +43,7 @@ public class ListingWriter {
 		for (int lineNumber = span.lineStart; lineNumber < lineEnd; lineNumber++) {
 			output.format("% 4d\t%04X\t", lineNumber + 1, line.getScope().getAddress().getInteger());
 			if (lineNumber == lineEnd - 1) {
-				byte[] bytes = line.getBytes();
-				for (byte b : bytes) {
-					output.format("%02X\t", b);
-				}
-				for (int i = bytes.length; i < 4; i++) {
-					output.print("\t");
-				}
+				writeObjectColumn(line);
 			} else {
 				output.print("\t\t\t\t");
 			}
@@ -57,6 +52,19 @@ public class ListingWriter {
 			else
 				output.println();
 		}
+	}
+
+	private void writeObjectColumn(Line line) {
+		if (line.getInstruction() instanceof MacroInstruction) {
+			output.print("MACRO\t\t\t\t");
+			return;
+		}
+
+		byte[] bytes = line.getBytes();
+		for (byte b : bytes)
+			output.format("%02X\t", b);
+		for (int i = bytes.length; i < 4; i++)
+			output.print("\t");
 	}
 
 	private boolean isExpandedLine(Line line) {

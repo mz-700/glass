@@ -19,6 +19,7 @@ import nl.grauw.glass.directives.Macro;
 import nl.grauw.glass.directives.Proc;
 import nl.grauw.glass.directives.Rept;
 import nl.grauw.glass.directives.Section;
+import nl.grauw.glass.directives.Struct;
 import nl.grauw.glass.directives.Terminator;
 import nl.grauw.glass.expressions.Expression;
 import nl.grauw.glass.expressions.Sequence;
@@ -30,6 +31,7 @@ public class SourceBuilder {
 	private static final List<String> ENDM_TERMINATORS = Arrays.asList("endm", "ENDM");
 	private static final List<String> ENDP_TERMINATORS = Arrays.asList("endp", "ENDP");
 	private static final List<String> ENDS_TERMINATORS = Arrays.asList("ends", "ENDS");
+	private static final List<String> ENDSTRUCT_TERMINATORS = Arrays.asList("endstruct", "ENDSTRUCT");
 	private static final List<String> ELSE_TERMINATORS = Arrays.asList("else", "ELSE", "endif", "ENDIF");
 	private static final List<String> ENDIF_TERMINATORS = Arrays.asList("endif", "ENDIF");
 
@@ -125,6 +127,9 @@ public class SourceBuilder {
 		case "macro":
 		case "MACRO":
 			return new Macro(parseBlock(line.getScope(), ENDM_TERMINATORS, parser));
+		case "struct":
+		case "STRUCT":
+			return new Struct(parseBlock(line.getScope(), ENDSTRUCT_TERMINATORS, parser));
 		case "rept":
 		case "REPT":
 			return new Rept(parseBlock(line.getScope(), ENDM_TERMINATORS, parser));
@@ -154,6 +159,8 @@ public class SourceBuilder {
 		case "ENDP":
 		case "ends":
 		case "ENDS":
+		case "endstruct":
+		case "ENDSTRUCT":
 		case "else":
 		case "ELSE":
 		case "endif":

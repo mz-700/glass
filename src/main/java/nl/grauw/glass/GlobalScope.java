@@ -101,6 +101,7 @@ public class GlobalScope extends Scope {
 		addBuiltInSymbol("mzf_start", new Instruction(new MzfStart(), new Scope(this)));
 		addBuiltInSymbol("mzf_comments", new Instruction(new MzfComments(), new Scope(this)));
 		addBuiltInSymbol("endm", new Instruction(new Endm(), new Scope(this)));
+		addBuiltInSymbol("endstruct", new Instruction(new Endm(), new Scope(this)));
 		addBuiltInSymbol("endp", new Instruction(new Endp(), new Scope(this)));
 		addBuiltInSymbol("ends", new Instruction(new Ends(), new Scope(this)));
 		addBuiltInSymbol("end", new Instruction(new End(), new Scope(this)));

@@ -19,124 +19,132 @@
    5	1236	FE	20			    CP  ' '
    6	1238	20	FA			    JR  NZ,PRINT
    7	123A	C9				    RET
-   8	123B					
+   8	123B					    
+   9	123B					LDW: MACRO dest,src
+  13	123B					
 # source: test.z80
   13	123B					    
   14	123B					SCREEN: equ $D000
   15	123B					COLORS: equ $D800
   16	123B					ZORRO:  equ SCREEN + 100
   17	123B					
-  18	123B					LDW: MACRO dest,src
-  22	123B					
-  23	123B					LDB: MACRO dest,(src)
-  29	123B					
-  30	123B					ADDB: MACRO dest,src
-  41	123B					
-  42	123B					
-  43	123B					INIT:
-  44	123B	CD	60	12		    CALL CLS
-  45	123E	21	7A	12		    LD  HL,text
-  46	1241	11	00	D0		    LD  DE,SCREEN
-  47	1244					
-  48	1244	7E				LOOP:    LD  A,(HL)
-  49	1245	12				    LD  (DE),A
-  50	1246	13				    INC  DE
-  51	1247	23				    INC  HL
-  52	1248	20	FA			    JR   NZ,LOOP
-  53	124A					
-  54	124A					    LDW  BC,DE
-  19	124A	D5					PUSH DE
-  20	124B	C1					POP BC
-  21	124C						ENDM
-  55	124C	11	44	12		    LD   DE,LOOP
-  56	124F					    LDB  C,(DE)
-  24	124F	E5					PUSH HL
-  25	1250						LDW HL, DE
-  19	1250	D5					PUSH DE
-  20	1251	E1					POP HL
-  21	1252						ENDM
-  26	1252	4E					LD C, (HL)
-  27	1253	E1					POP HL
-  28	1254						ENDM
-  57	1254					    
-  58	1254					    ADDB C,(IX+5)
-  34	1254	32	00	BF			LD (SAVE_A), A
-  35	1257	79					LD A, C
-  36	1258	DD	86	05			ADD A, (IX + 5H)
-  37	125B	4F					LD C, A
-  38	125C	3A	00	BF			LD A, (SAVE_A)
-  39	125F						ENDIF
-  40	125F						ENDM
-  59	125F					    
-  60	125F	76				    HALT
-  61	1260					    
-  62	1260					    
-  63	1260					CLS: PROC
-  64	1260	21	00	D8		    LD  HL,COLORS
-  65	1263	11	00	D0		    LD  DE,SCREEN
-  66	1266	06	64			    LD  B,100
-  67	1268	3E	00			    LD  A,0
-  68	126A					    LDW  DE,HL
-  19	126A	E5					PUSH HL
-  20	126B	D1					POP DE
-  21	126C						ENDM
-  69	126C					clsloop:
-  70	126C	12				    LD  (DE),A
-  71	126D	13				    INC  DE
-  72	126E	23				    INC  HL
-  73	126F	05				    DEC  B
-  74	1270	20	FA			    JR   NZ,clsloop
-  75	1272	C9				    RET
-  76	1273					    ENDP
-  77	1273					
-  78	1273	C3	00	F0		    JP  SET_MEM
-  79	1276					    
-  80	1276					    PHASE $3000,10
-  81	3000	00				    NOP
-  82	3001	00				    NOP
-  83	3002	00				    NOP
-  84	3003	00				    NOP
-  85	3004	00				    NOP
-  86	3005	00				    NOP
-  87	3006	00				    NOP
-  88	3007	00				    NOP
-  89	3008					
-  90	3008	00				    NOP
-  91	3009					    DEPHASE
-  92	1276					        
-  93	1276					            
-  94	1276					                
-  95	1276					    
-  96	1276					    
-  97	1276					    BANK_C
-  98	F000					SET_MEM:
-  99	F000	3E	FF			    LD A,$FF
- 100	F002	32	00	C1		    LD  ($C100),A
- 101	F005	C9				    RET                    
- 102	F006					    END_BANK
- 103	1276					
- 104	1276					    
- 105	1276					    BANK_B    
- 106	E010					SET_MEM2:
- 107	E010	21	10	E0		    LD  HL,SET_MEM2
- 108	E013	3E	FF			    LD A,$FF
- 109	E015	32	00	C1		    LD  ($C100),A
- 110	E018	C9				    RET                    
- 111	E019					    END_BANK
- 112	1276					    
- 113	1276					    
- 114	1276					BLOP:
- 115	1276	21	76	12		    LD  HL,BLOP
- 116	1279	C9				    RET
- 117	127A					   
- 118	127A					        
- 119	127A	48	65	6C	6C	6F	20	57	6F	72	6C	64	21	00	text: db "Hello World!",0
- 120	1287	34	12	78	56	zobiol: DW $1234,$5678
- 121	128B					
- 122	128B					    ORG $BF00
- 123	BF00	00				SAVE_A: DS 1
- 124	BF01	00				SAVE_B: DS 1
- 125	BF02	00				SAVE_C: DS 1
- 126	BF03	00				SAVE_D: DS 1
- 127	BF04	00				SAVE_E: DS 1
- 128	BF05					
+  18	123B					
+  19	123B					
+  20	123B					LDB: MACRO dest,(src)
+  26	123B					
+  27	123B					ADDB: MACRO dest,src
+  38	123B					
+  39	123B					
+  40	123B					INIT:
+  41	123B	CD	60	12		    CALL CLS
+  42	123E	21	7A	12		    LD  HL,text
+  43	1241	11	00	D0		    LD  DE,SCREEN
+  44	1244					
+  45	1244	7E				LOOP:    LD  A,(HL)
+  46	1245	12				    LD  (DE),A
+  47	1246	13				    INC  DE
+  48	1247	23				    INC  HL
+  49	1248	20	FA			    JR   NZ,LOOP
+  50	124A					
+  51	124A	MACRO				    LDW  BC,DE
+# source: include.z80
+  10	124A	D5					PUSH DE
+  11	124B	C1					POP BC
+  12	124C						ENDM
+# source: test.z80
+  52	124C	11	44	12		    LD   DE,LOOP
+  53	124F	MACRO				    LDB  C,(DE)
+  21	124F	E5					PUSH HL
+  22	1250	MACRO					LDW HL, DE
+# source: include.z80
+  10	1250	D5					PUSH DE
+  11	1251	E1					POP HL
+  12	1252						ENDM
+# source: test.z80
+  23	1252	4E					LD C, (HL)
+  24	1253	E1					POP HL
+  25	1254						ENDM
+  54	1254					    
+  55	1254	MACRO				    ADDB C,(IX+5)
+  31	1254	32	00	BF			LD (SAVE_A), A
+  32	1257	79					LD A, C
+  33	1258	DD	86	05			ADD A, (IX + 5H)
+  34	125B	4F					LD C, A
+  35	125C	3A	00	BF			LD A, (SAVE_A)
+  36	125F						ENDIF
+  37	125F						ENDM
+  56	125F					    
+  57	125F	76				    HALT
+  58	1260					    
+  59	1260					    
+  60	1260					CLS: PROC
+  61	1260	21	00	D8		    LD  HL,COLORS
+  62	1263	11	00	D0		    LD  DE,SCREEN
+  63	1266	06	64			    LD  B,100
+  64	1268	3E	00			    LD  A,0
+  65	126A	MACRO				    LDW  DE,HL
+# source: include.z80
+  10	126A	E5					PUSH HL
+  11	126B	D1					POP DE
+  12	126C						ENDM
+# source: test.z80
+  66	126C					clsloop:
+  67	126C	12				    LD  (DE),A
+  68	126D	13				    INC  DE
+  69	126E	23				    INC  HL
+  70	126F	05				    DEC  B
+  71	1270	20	FA			    JR   NZ,clsloop
+  72	1272	C9				    RET
+  73	1273					    ENDP
+  74	1273					
+  75	1273	C3	00	F0		    JP  SET_MEM
+  76	1276					    
+  77	1276					    PHASE $3000,10
+  78	3000	00				    NOP
+  79	3001	00				    NOP
+  80	3002	00				    NOP
+  81	3003	00				    NOP
+  82	3004	00				    NOP
+  83	3005	00				    NOP
+  84	3006	00				    NOP
+  85	3007	00				    NOP
+  86	3008					
+  87	3008	00				    NOP
+  88	3009					    DEPHASE
+  89	1276					        
+  90	1276					            
+  91	1276					                
+  92	1276					    
+  93	1276					    
+  94	1276					    BANK_C
+  95	F000					SET_MEM:
+  96	F000	3E	FF			    LD A,$FF
+  97	F002	32	00	C1		    LD  ($C100),A
+  98	F005	C9				    RET                    
+  99	F006					    END_BANK
+ 100	1276					
+ 101	1276					    
+ 102	1276					    BANK_B    
+ 103	E010					SET_MEM2:
+ 104	E010	21	10	E0		    LD  HL,SET_MEM2
+ 105	E013	3E	FF			    LD A,$FF
+ 106	E015	32	00	C1		    LD  ($C100),A
+ 107	E018	C9				    RET                    
+ 108	E019					    END_BANK
+ 109	1276					    
+ 110	1276					    
+ 111	1276					BLOP:
+ 112	1276	21	76	12		    LD  HL,BLOP
+ 113	1279	C9				    RET
+ 114	127A					   
+ 115	127A					        
+ 116	127A	48	65	6C	6C	6F	20	57	6F	72	6C	64	21	00	text: db "Hello World!",0
+ 117	1287	34	12	78	56	zobiol: DW $1234,$5678
+ 118	128B					
+ 119	128B					    ORG $BF00
+ 120	BF00	00				SAVE_A: DS 1
+ 121	BF01	00				SAVE_B: DS 1
+ 122	BF02	00				SAVE_C: DS 1
+ 123	BF03	00				SAVE_D: DS 1
+ 124	BF04	00				SAVE_E: DS 1
+ 125	BF05					

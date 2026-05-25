@@ -36,6 +36,19 @@ public class Scope implements Context {
 		return symbols.keySet();
 	}
 
+	public String getLocalSymbolNameForContext(Scope context) {
+		for (Entry<String, Expression> entry : symbols.entrySet()) {
+			Expression value = entry.getValue();
+			try {
+				if (value.is(Type.CONTEXT) && value.getContext() == context)
+					return entry.getKey();
+			} catch (EvaluationException e) {
+				// Ignore unresolved symbols while searching for a scope owner.
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public Expression getAddress() {
 		if (this.address == null)

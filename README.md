@@ -39,7 +39,7 @@ Options:
     
   * `-L list_file` File to output a listing of the assembled code to.
 
-  * `-D debug_file` File to output debug information to. Information about its format lower.
+  * `-D debug_file` File to output debug information to. This file is used by the MZ700 Debugger.
 
   * `-O type` Output type. Supported values are `BIN` for a raw binary file
     (the default), and `MZF` for a Sharp MZ-700 program file.
@@ -150,10 +150,12 @@ statements.
 
 #### `phase`, `dephase`: Phased code
     
-Temporarily changes the address location counter for symbols and `$`,
-without advancing the surrounding address location counter. Object code is
-still emitted at the current output position. An optional second argument
-specifies the maximum phased address span before `dephase`.
+Temporarily changes the address used for labels and `$`, without advancing
+the surrounding address location counter. Object code is still emitted at
+the current output position.
+
+This is useful for code that is stored in one place in the output file, but
+will be copied, banked, or mapped to another address before it is executed.
     
         org $1200
         nop
@@ -167,16 +169,42 @@ specifies the maximum phased address span before `dephase`.
     label2:
         ld bc,label2
 
+In this example, the two `nop` instructions are assembled at `$1200` and
+`$1201`. The phased block is emitted next in the output file, but labels
+inside it are resolved as if the code starts at `$3000`, so `ld hl,label`
+loads `$3000`. After `dephase`, assembly resumes at the original address,
+so `label2` is `$1202`.
+
+A phase block can also specify a maximum size:
+
         phase $3000,$100
         ; phased code here must fit in $100 bytes
         dephase
 
+If the phased code exceeds the limit before `dephase`, assembly fails. It is
+also an error to start a new `phase` or bank block before ending the current
+one.
+
 #### `bank_a`, `bank_b`, and `bank_c`: use with the Sharp MZ700 ST-110 MMU board
 
-These are aliases for phased blocks starting at `$D000`, `$E010`, and `$F000`, respectively.\
+These are aliases for phased blocks starting at `$D000`, `$E010`, and `$F000`, respectively.
 `bank_a` and `bank_c` default to a maximum size of 4096 bytes, and `bank_b` defaults to 4080
-bytes. A numeric argument overrides the default size, and `size_off` disables the size limit.\ 
+bytes. A numeric argument overrides the default size, and `size_off` disables the size limit.
 `end_bank` is an alias for `dephase`.
+
+        bank_a
+    BankRoutine:
+        ld hl,BankRoutine
+        ret
+        end_bank
+
+        bank_b 512
+        ; this bank block must fit in 512 bytes
+        end_bank
+
+        bank_c size_off
+        ; no explicit size limit
+        end_bank
 
 #### `mzf_title`, `mzf_load`, `mzf_start`, `mzf_comments`: MZF output metadata
     
@@ -231,14 +259,100 @@ specify the parameters which are passed when the macro is invoked.
                ALIGN 100H
     
 All symbols defined in a macro block are local. Symbols in macro instances
-can be referenced by using the `.` operator. Symbols in macro definitions
-can also be referenced; the contents are assembled on address 0, effectively
-turning the inner symbols into offsets. This is useful for specifying
-structures and indexing.
+can be referenced by using the `.` operator.
     
 Default values for macro arguments can be specified with `=`:
     
         ALIGN: MACRO ?boundary = 100H
+
+Macros can be used to define convenient pseudo-instructions. Arguments are
+expressions, so registers, labels, constants, and parenthesized operands can
+be passed through to the expanded code.
+
+        LDW: MACRO dest,src
+             push src
+             pop dest
+             ENDM
+
+             LDW bc,hl       ; expands to: push hl / pop bc
+
+Macro parameters can also describe a required parenthesized argument. The
+parentheses are matched at the call site, and the inner expression is bound
+to the parameter:
+
+        LDB: MACRO dest,(src)
+             push hl
+             LDW hl,src
+             ld dest,(hl)
+             pop hl
+             ENDM
+
+             LDB c,(de)
+
+In this example, `dest` is `c`, and `src` is `de`. Calling `LDB c,de`
+would be rejected because the second argument is required to be
+parenthesized.
+
+Macro arguments can be tested with `if`. Register arguments can be compared
+with `=` and `!=`, which is useful for validating pseudo-instruction
+operands:
+
+        ADDB: MACRO dest,src
+             IF dest = a
+                 ERROR "Invalid destination. A is not allowed."
+             ELSE
+                 ld (SAVE_A),a
+                 ld a,dest
+                 add a,src
+                 ld dest,a
+                 ld a,(SAVE_A)
+             ENDIF
+             ENDM
+
+             ADDB c,e
+
+        SAVE_A: ds 1
+
+Macro definitions do not define structure offsets. Use `struct` for data
+layouts.
+
+#### `struct`, `endstruct`: Structures
+
+Defines a structure layout. The contents are assembled virtually at address
+0, turning the inner symbols into offsets. The structure itself does not
+emit object code.
+
+        PLAYER: STRUCT
+        x:       db 0
+        y:       db 0
+        health:  db 0
+        score:   dw 0
+        _size:   ENDSTRUCT
+
+The labels inside the structure become offsets:
+
+        PLAYER.x       ; 0
+        PLAYER.y       ; 1
+        PLAYER.health  ; 2
+        PLAYER.score   ; 3
+        PLAYER._size   ; 5
+
+You can allocate storage for an instance and access fields by adding the
+offsets to the instance address:
+
+    player1:
+        ds PLAYER._size
+
+        ld hl,player1 + PLAYER.health
+        ld (hl),100
+
+If an index register points to an instance, the offsets can be used directly
+in indexed addressing:
+
+        ld ix,player1
+        ld a,(ix + PLAYER.x)
+        ld b,(ix + PLAYER.y)
+        ld (ix + PLAYER.health),100
     
 #### `rept`, `endm`: Repetition
     

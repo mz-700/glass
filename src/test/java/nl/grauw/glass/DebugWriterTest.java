@@ -100,7 +100,7 @@ public class DebugWriterTest extends TestBase {
 			s(
 				label("outer", sourcePath, 1, "LABEL", "0"),
 				label("procLabel", sourcePath, 2, "LABEL", "1"),
-				label(".inner", sourcePath, 3, "LABEL", "1"),
+				label("procLabel.inner", sourcePath, 3, "LABEL", "1"),
 				map(0, 2, "code")
 			),
 			debug(sourcePath)
@@ -124,13 +124,33 @@ public class DebugWriterTest extends TestBase {
 			s(
 				label("target", sourcePath, 1, "LABEL", "0"),
 				label("procLabel", sourcePath, 4, "LABEL", "7"),
-				label(".local", sourcePath, 5, "LABEL", "7"),
+				label("procLabel.local", sourcePath, 5, "LABEL", "7"),
 				map(0, 10, "code"),
 				"target:1,4",
-				".local:8"
+				"procLabel.local:8"
 			),
 			debug(sourcePath)
 		);
+	}
+
+	@Test
+	public void testMacros() throws IOException {
+		Path sourcePath = temporaryDirectory.resolve("debugMacros.asm");
+		Files.write(sourcePath, Arrays.asList(
+			"LDW: MACRO dest,src",
+			" PUSH src",
+			" POP dest",
+			" ENDM",
+			"NOP2: MACRO",
+			" NOP",
+			" NOP",
+			" ENDM",
+			" LDW BC,DE"
+		));
+
+		List<String> debug = debug(sourcePath);
+		assertTrue(debug.contains(macro("LDW", sourcePath, 1)));
+		assertTrue(debug.contains(macro("NOP2", sourcePath, 5)));
 	}
 
 	@TempDir
@@ -158,6 +178,10 @@ public class DebugWriterTest extends TestBase {
 
 	private String map(int start, int end, String type) {
 		return start + ":" + end + ":" + type;
+	}
+
+	private String macro(String name, Path sourcePath, int lineNumber) {
+		return name + ": " + sourcePath.toAbsolutePath().normalize() + "," + lineNumber;
 	}
 
 }

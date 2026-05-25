@@ -5,6 +5,7 @@ import nl.grauw.glass.Line;
 import nl.grauw.glass.Scope;
 import nl.grauw.glass.Source;
 import nl.grauw.glass.expressions.Instruction;
+import nl.grauw.glass.instructions.Empty;
 import nl.grauw.glass.instructions.MacroInstruction;
 
 public class Macro extends Directive {
@@ -31,7 +32,7 @@ public class Macro extends Directive {
 		);
 		for (String label : line.getLabels())
 			scope.addSymbol(label, instruction);
-		line.setInstruction(new nl.grauw.glass.instructions.Macro(source));
+		line.setInstruction(Empty.INSTANCE);
 	}
 
 }

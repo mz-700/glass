@@ -53,24 +53,19 @@ public class SymbolsTest extends TestBase {
 	}
 
 	@Test
-	public void testMacro() {
+	public void testStruct() {
 		assertIterableEquals(
 			s(
 				"Test._size: equ 5H",
 				"Test.x: equ 0H",
-				"Test.y: equ 4H",
-				"test: equ 1H",
-				"test._size: equ 6H",
-				"test.x: equ 1H",
-				"test.y: equ 5H"
+				"Test.y: equ 4H"
 			),
 			symbols(
 				" nop",
-				"Test: MACRO",
+				"Test: STRUCT",
 				"x: dd -1",
 				"y: db -1",
-				"_size: ENDM",
-				"test: Test"
+				"_size: ENDSTRUCT"
 			)
 		);
 	}
