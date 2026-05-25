@@ -145,4 +145,21 @@ public class Line {
 		return builder.toString();
 	}
 
+	public String toListingString() {
+		StringBuilder builder = new StringBuilder();
+		for (String label : labels)
+			builder.append(label).append(": ");
+		if (mnemonic != null) {
+			builder.append("\t").append(mnemonic);
+			if (arguments != null)
+				builder.append(" ").append(arguments.toListingString());
+		}
+		if (comment != null) {
+			if (mnemonic != null)
+				builder.append(" ");
+			builder.append(";").append(comment);
+		}
+		return builder.toString();
+	}
+
 }

@@ -15,6 +15,31 @@ SCREEN: equ $D000
 COLORS: equ $D800
 ZORRO:  equ SCREEN + 100
 
+LDW: MACRO dest,src
+    PUSH src
+    POP dest
+ENDM
+
+LDB: MACRO dest,(src)
+    PUSH HL
+    LDW  HL,src
+    LD  dest,(HL)
+    POP  HL   
+ENDM
+
+ADDB: MACRO dest,src
+    IF dest = A
+      ERROR "Invalid destination. A is not allowed."
+    ELSE
+      LD  (SAVE_A),A  
+      LD  A,dest
+      ADD A,src
+      LD  dest,A
+      LD  A,(SAVE_A)
+    ENDIF
+    ENDM
+
+
 INIT:
     CALL CLS
     LD  HL,text
@@ -25,6 +50,13 @@ LOOP:    LD  A,(HL)
     INC  DE
     INC  HL
     JR   NZ,LOOP
+
+    LDW  BC,DE
+    LD   DE,LOOP
+    LDB  C,(DE)
+    
+    ADDB C,(IX+5)
+    
     HALT
     
     
@@ -33,7 +65,7 @@ CLS: PROC
     LD  DE,SCREEN
     LD  B,100
     LD  A,0
-    LD  DE,HL
+    LDW  DE,HL
 clsloop:
     LD  (DE),A
     INC  DE
@@ -86,3 +118,10 @@ BLOP:
         
 text: db "Hello World!",0
 zobiol: DW $1234,$5678
+
+    ORG $BF00
+SAVE_A: DS 1
+SAVE_B: DS 1
+SAVE_C: DS 1
+SAVE_D: DS 1
+SAVE_E: DS 1

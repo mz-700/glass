@@ -4,6 +4,7 @@ import java.util.List;
 
 import nl.grauw.glass.AssemblyException;
 import nl.grauw.glass.Line;
+import nl.grauw.glass.ParameterScope;
 import nl.grauw.glass.Scope;
 import nl.grauw.glass.Source;
 import nl.grauw.glass.expressions.Equals;
@@ -28,14 +29,16 @@ public class Macro extends InstructionFactory {
 		Expression parameters = line.getArguments();
 		while (parameters != null) {
 			Expression parameter = parameters.getHead();
-			if (!(parameter instanceof Identifier) &&
-					!(parameter instanceof Equals && ((Equals)parameter).getTerm1() instanceof Identifier))
+			if (!ParameterScope.isParameter(parameter) &&
+					!(parameter instanceof Equals && ParameterScope.isParameter(((Equals)parameter).getTerm1())))
 				throw new ArgumentException("Parameter must be an identifier.");
 
 			if ( parameter instanceof Equals equals ) {
-                parameterScope.addSymbol(((Identifier)equals.getTerm1()).getName(), equals.getTerm2());
+				Identifier identifier = ParameterScope.getParameterIdentifier(equals.getTerm1());
+				parameterScope.addSymbol(identifier.getName(), equals.getTerm2());
 			} else {
-				parameterScope.addSymbol(((Identifier)parameter).getName(), IntegerLiteral.ZERO);
+				Identifier identifier = ParameterScope.getParameterIdentifier(parameter);
+				parameterScope.addSymbol(identifier.getName(), IntegerLiteral.ZERO);
 			}
 			parameters = parameters.getTail();
 		}

@@ -43,4 +43,9 @@ public class Annotation extends Expression {
 		return "{" + annotation.toDebugString() + " " + annotee.toDebugString() + "}";
 	}
 
+	@Override
+	public String toListingString() {
+		return annotation.toListingString() + " " + annotee.toListingString();
+	}
+
 }

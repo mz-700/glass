@@ -92,6 +92,15 @@ public class Parser {
 					character == '_' || character == '.' || character == '?' || character == '@';
 		}
 
+		public boolean isStandaloneMnemonic(String identifier) {
+			return "end".equals(identifier) || "END".equals(identifier) ||
+					"endm".equals(identifier) || "ENDM".equals(identifier) ||
+					"endp".equals(identifier) || "ENDP".equals(identifier) ||
+					"ends".equals(identifier) || "ENDS".equals(identifier) ||
+					"else".equals(identifier) || "ELSE".equals(identifier) ||
+					"endif".equals(identifier) || "ENDIF".equals(identifier);
+		}
+
 	}
 
 	private final LabelStartState labelStartState = new LabelStartState();
@@ -118,13 +127,25 @@ public class Parser {
 				accumulator.append(character);
 				return labelReadState;
 			} else {
-				lineBuilder.setLabel(accumulator.toString());
+				String identifier = accumulator.toString();
 				accumulator.setLength(0);
-				if (character == ':' || isWhitespace(character)) {
+				if (character != ':' && isStandaloneMnemonic(identifier)) {
+					lineBuilder.setMnemonic(identifier);
+					if (isWhitespace(character)) {
+						return argumentStartState;
+					} else if (character == ';') {
+						return commentReadState;
+					} else if (character == '\n' || character == '\0') {
+						return labelStartState;
+					}
+				} else if (character == ':' || isWhitespace(character)) {
+					lineBuilder.setLabel(identifier);
 					return statementStartState;
 				} else if (character == ';') {
+					lineBuilder.setLabel(identifier);
 					return commentReadState;
 				} else if (character == '\n' || character == '\0') {
+					lineBuilder.setLabel(identifier);
 					return labelStartState;
 				}
 			}

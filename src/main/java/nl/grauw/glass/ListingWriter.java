@@ -18,6 +18,10 @@ public class ListingWriter {
 
 	public void write(Source source) {
 		for (Line line : source.getLines()) {
+			if (line.getInstructionObject() instanceof nl.grauw.glass.instructions.If.IfObject) {
+				write(((nl.grauw.glass.instructions.If.IfObject)line.getInstructionObject()).getSelectedSource());
+				continue;
+			}
 			write(line);
 			if (line.getInstruction() instanceof Ds) {
 				for (Section section : ((Ds)line.getInstruction()).getSections()) {
@@ -49,10 +53,20 @@ public class ListingWriter {
 				output.print("\t\t\t\t");
 			}
 			if (lineNumber < span.lineEnd)
-				output.println(sourceFile.getLine(lineNumber));
+				output.println(isExpandedLine(line) ? line.toListingString() : sourceFile.getLine(lineNumber));
 			else
 				output.println();
 		}
+	}
+
+	private boolean isExpandedLine(Line line) {
+		Scope scope = line.getScope();
+		while (scope != null) {
+			if (scope instanceof ParameterScope)
+				return true;
+			scope = scope.getParent();
+		}
+		return false;
 	}
 
 }

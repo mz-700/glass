@@ -8,7 +8,6 @@ import nl.grauw.glass.Scope;
 import nl.grauw.glass.Source;
 import nl.grauw.glass.expressions.Equals;
 import nl.grauw.glass.expressions.Expression;
-import nl.grauw.glass.expressions.Identifier;
 
 public class MacroInstruction extends InstructionFactory {
 
@@ -21,10 +20,10 @@ public class MacroInstruction extends InstructionFactory {
 
 		Expression parameter = parameters != null ? parameters.getElement(0) : null;
 		for (int i = 0; parameter != null; i++) {
-			if (!(parameter instanceof Identifier) &&
-					!(parameter instanceof Equals && ((Equals)parameter).getTerm1() instanceof Identifier))
+			if (!ParameterScope.isParameter(parameter) &&
+					!(parameter instanceof Equals && ParameterScope.isParameter(((Equals)parameter).getTerm1())))
 				throw new ArgumentException("Parameter must be an identifier.");
-			parameter = parameters.getElement(i);
+			parameter = parameters.getElement(i + 1);
 		}
 	}
 

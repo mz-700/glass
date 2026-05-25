@@ -1,5 +1,6 @@
 package nl.grauw.glass.expressions;
 
+import nl.grauw.glass.ParameterScope;
 import nl.grauw.glass.Scope;
 
 public class Identifier extends Passthrough {
@@ -32,6 +33,19 @@ public class Identifier extends Passthrough {
 	}
 
 	public String toDebugString() {
+		return toString();
+	}
+
+	@Override
+	public String toListingString() {
+		if (context instanceof Scope) {
+			Scope scope = (Scope)context;
+			while (scope != null) {
+				if (scope instanceof ParameterScope && scope.hasLocalSymbol(name))
+					return scope.getLocalSymbol(name).toListingString();
+				scope = scope.getParent();
+			}
+		}
 		return toString();
 	}
 

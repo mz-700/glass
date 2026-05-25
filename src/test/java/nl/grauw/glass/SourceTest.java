@@ -656,6 +656,95 @@ public class SourceTest extends TestBase {
 	}
 
 	@Test
+	public void testMacroWithUnindentedEndm() {
+		assertArrayEquals(b(0xC5, 0xE1), assemble(
+			"LDW: MACRO dest,src",
+			" PUSH src",
+			" POP dest",
+			"ENDM",
+			" LDW HL,BC"
+		));
+	}
+
+	@Test
+	public void testMacroGroupedParameter() {
+		assertArrayEquals(b(0xE5, 0xD5, 0xE1, 0x7E, 0xE1), assemble(
+			"LDW: MACRO dest,src",
+			" PUSH src",
+			" POP dest",
+			" ENDM",
+			"LDB: MACRO dest,(src)",
+			" PUSH HL",
+			" LDW HL,src",
+			" LD dest,(HL)",
+			" POP HL",
+			" ENDM",
+			" LDB A,(DE)"
+		));
+	}
+
+	@Test
+	public void testMacroGroupedParameterRequiresGroupedArgument() {
+		assertArgumentException(10, () -> assemble(
+			"LDW: MACRO dest,src",
+			" PUSH src",
+			" POP dest",
+			" ENDM",
+			"LDB: MACRO dest,(src)",
+			" PUSH HL",
+			" LDW HL,src",
+			" LD dest,(HL)",
+			" POP HL",
+			" ENDM",
+			" LDB A,DE"
+		));
+	}
+
+	@Test
+	public void testMacroIfRegisterEquals() {
+		assertArrayEquals(b(0x78, 0x81), assemble(
+			"ADDB: MACRO dest,src",
+			" IF dest = A",
+			" ERROR \"Invalid parameter\"",
+			" ELSE",
+			" LD A,dest",
+			" ADD A,src",
+			" ENDIF",
+			" ENDM",
+			" ADDB B,C"
+		));
+	}
+
+	@Test
+	public void testMacroIfRegisterEqualsError() {
+		assertErrorDirectiveException("Invalid parameter", 2, () -> assemble(
+			"ADDB: MACRO dest,src",
+			" IF dest = A",
+			" ERROR \"Invalid parameter\"",
+			" ELSE",
+			" LD A,dest",
+			" ADD A,src",
+			" ENDIF",
+			" ENDM",
+			" ADDB A,C"
+		));
+	}
+
+	@Test
+	public void testMacroIfRegisterNotEquals() {
+		assertArrayEquals(b(0x00), assemble(
+			"TEST: MACRO dest",
+			" IF dest != A",
+			" NOP",
+			" ELSE",
+			" HALT",
+			" ENDIF",
+			" ENDM",
+			" TEST B"
+		));
+	}
+
+	@Test
 	public void testMacroInRepeat() {
 		assertArrayEquals(b(0x3E, 0x30, 0x3E, 0x32), assemble(
 			" REPT 2",

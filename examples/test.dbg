@@ -4,22 +4,31 @@ PRINT: C:\mz700\software\APP-glass\examples\include.z80,1,LABEL,4660
 SCREEN: C:\mz700\software\APP-glass\examples\test.z80,13,EQU,53248
 COLORS: C:\mz700\software\APP-glass\examples\test.z80,15,EQU,55296
 ZORRO: C:\mz700\software\APP-glass\examples\test.z80,16,EQU,53348
-INIT: C:\mz700\software\APP-glass\examples\test.z80,17,LABEL,4667
-LOOP: C:\mz700\software\APP-glass\examples\test.z80,22,LABEL,4676
-CLS: C:\mz700\software\APP-glass\examples\test.z80,29,LABEL,4683
-.clsloop: C:\mz700\software\APP-glass\examples\test.z80,35,LABEL,4693
-SET_MEM: C:\mz700\software\APP-glass\examples\test.z80,64,LABEL,61440
-SET_MEM2: C:\mz700\software\APP-glass\examples\test.z80,72,LABEL,57360
-BLOP: C:\mz700\software\APP-glass\examples\test.z80,78,LABEL,4703
-text: C:\mz700\software\APP-glass\examples\test.z80,83,DC,4707
-zobiol: C:\mz700\software\APP-glass\examples\test.z80,86,DC,4720
+LDW: C:\mz700\software\APP-glass\examples\test.z80,17,LABEL,4667
+LDB: C:\mz700\software\APP-glass\examples\test.z80,22,LABEL,4667
+ADDB: C:\mz700\software\APP-glass\examples\test.z80,29,LABEL,4667
+INIT: C:\mz700\software\APP-glass\examples\test.z80,41,LABEL,4667
+LOOP: C:\mz700\software\APP-glass\examples\test.z80,47,LABEL,4676
+CLS: C:\mz700\software\APP-glass\examples\test.z80,61,LABEL,4704
+.clsloop: C:\mz700\software\APP-glass\examples\test.z80,69,LABEL,4716
+SET_MEM: C:\mz700\software\APP-glass\examples\test.z80,98,LABEL,61440
+SET_MEM2: C:\mz700\software\APP-glass\examples\test.z80,106,LABEL,57360
+BLOP: C:\mz700\software\APP-glass\examples\test.z80,112,LABEL,4726
+text: C:\mz700\software\APP-glass\examples\test.z80,117,DC,4730
+zobiol: C:\mz700\software\APP-glass\examples\test.z80,120,DC,4743
+SAVE_A: C:\mz700\software\APP-glass\examples\test.z80,123,DS,48896
+SAVE_B: C:\mz700\software\APP-glass\examples\test.z80,124,DS,48897
+SAVE_C: C:\mz700\software\APP-glass\examples\test.z80,125,DS,48898
+SAVE_D: C:\mz700\software\APP-glass\examples\test.z80,126,DS,48899
+SAVE_E: C:\mz700\software\APP-glass\examples\test.z80,127,DS,48900
 
 ; MAP
 
 4608:4660:data
-4660:4707:code
-4707:4724:data
+4660:4730:code
+4730:4747:data
 12288:12297:code
+48896:48901:data
 57360:57369:code
 61440:61446:code
 
@@ -28,10 +37,11 @@ zobiol: C:\mz700\software\APP-glass\examples\test.z80,86,DC,4720
 PRINT:4664
 CLS:4667
 text:4670
-SCREEN:4673,4686
-LOOP:4680
-COLORS:4683
-.clsloop:4697
-SET_MEM:4700
+SCREEN:4673,4707
+LOOP:4680,4684
+SAVE_A:4692,4700
+COLORS:4704
+.clsloop:4720
+SET_MEM:4723
 SET_MEM2:57360
-BLOP:4703
+BLOP:4726

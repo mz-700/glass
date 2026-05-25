@@ -46,4 +46,9 @@ public class Index extends Passthrough {
 		return "{" + sequence.toDebugString() + "[" + index.toDebugString() + "]}";
 	}
 
+	@Override
+	public String toListingString() {
+		return sequence.toListingString() + "[" + index.toListingString() + "]";
+	}
+
 }

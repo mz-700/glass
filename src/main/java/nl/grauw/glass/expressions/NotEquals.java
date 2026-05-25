@@ -12,9 +12,18 @@ public class NotEquals extends BinaryOperator {
 	}
 
 	@Override
+	public boolean is(Expression type) {
+		return type.is(Type.INTEGER) && term1.is(Type.REGISTER) && term2.is(Type.REGISTER) ||
+				super.is(type);
+	}
+
+	@Override
 	public Expression get(Expression type) {
-		if (type.is(Type.INTEGER))
+		if (type.is(Type.INTEGER)) {
+			if (term1.is(Type.REGISTER) && term2.is(Type.REGISTER))
+				return IntegerLiteral.of(!Equals.registersEqual(term1.getRegister(), term2.getRegister()));
 			return IntegerLiteral.of(term1.getInteger() != term2.getInteger());
+		}
 		return super.get(type);
 	}
 

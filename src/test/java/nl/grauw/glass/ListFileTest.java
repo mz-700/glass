@@ -92,6 +92,91 @@ public class ListFileTest extends TestBase {
 		);
 	}
 
+	@Test
+	public void testMacroParameters() {
+		assertIterableEquals(
+			s(
+				"# source: null",
+				"   1	0000					LDW: MACRO dest,src",
+				"   5	0000					 LDW BC,DE",
+				"   2	0000	D5					PUSH DE",
+				"   3	0001	C1					POP BC",
+				"   4	0002					\tENDM",
+				"   6	0002					"
+			),
+			list(
+				"LDW: MACRO dest,src",
+				" PUSH src",
+				" POP dest",
+				"\tENDM",
+				" LDW BC,DE"
+			)
+		);
+	}
+
+	@Test
+	public void testNestedMacroParameters() {
+		assertIterableEquals(
+			s(
+				"# source: null",
+				"   1	0000					LDW: MACRO dest,src",
+					"   5	0000					LDB: MACRO dest,(src)",
+					"  11	0000					 LDB C,(DE)",
+					"   6	0000	E5					PUSH HL",
+					"   7	0001					\tLDW HL, DE",
+					"   2	0001	D5					PUSH DE",
+				"   3	0002	E1					POP HL",
+				"   4	0003					\tENDM",
+				"   8	0003	4E					LD C, (HL)",
+				"   9	0004	E1					POP HL",
+				"  10	0005					\tENDM",
+				"  12	0005					"
+			),
+			list(
+				"LDW: MACRO dest,src",
+				" PUSH src",
+				" POP dest",
+				"\tENDM",
+				"LDB: MACRO dest,(src)",
+				" PUSH HL",
+				"\tLDW HL,src",
+				" LD dest,(HL)",
+				" POP HL",
+				"\tENDM",
+				" LDB C,(DE)"
+			)
+		);
+	}
+
+	@Test
+	public void testMacroIfParameters() {
+		assertIterableEquals(
+			s(
+					"# source: null",
+					"   1	0000					ADDB: MACRO dest,src",
+					"  10	0000					 ADDB C,E",
+					"   5	0000	79					LD A, C",
+					"   6	0001	83					ADD A, E",
+					"   7	0002	4F					LD C, A",
+					"   8	0003						ENDIF",
+					"   9	0003						ENDM",
+					"  11	0003					"
+				),
+			list(
+				"ADDB: MACRO dest,src",
+				" IF dest = A",
+				" ERROR \"Invalid destination. A is not allowed.\"",
+				" ELSE",
+				"\tLD A,dest",
+				"\tADD A,src",
+				"\tLD dest,A",
+				" ENDIF",
+				" ENDM",
+				" ADDB C,E"
+			)
+		);
+	}
+
 	@TempDir
 	static Path temporaryDirectory;
 

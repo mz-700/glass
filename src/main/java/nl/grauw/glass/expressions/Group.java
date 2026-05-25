@@ -35,4 +35,9 @@ public class Group extends Passthrough {
 		return "(" + term.toDebugString() + ")";
 	}
 
+	@Override
+	public String toListingString() {
+		return "(" + term.toListingString() + ")";
+	}
+
 }
