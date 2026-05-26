@@ -3,37 +3,38 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>nl.grauw</groupId>
-	<artifactId>glass</artifactId>
-	<version>0.7-SNAPSHOT</version>
+	<artifactId>MZGlass</artifactId>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 	
-	<name>Glass Z80 assembler</name>
-	<description>A cross-platform Z80 assembler.</description>
-	<url>http://www.grauw.nl/projects/glass/</url>
-	<inceptionYear>2013</inceptionYear>
+	<name>MZGlass Z80 assembler</name>
+
+	<description>
+        A cross-platform Z80 assembler for the Sharp MZ700.
+        Originally based on Glass Z80 Assembler by Laurens Holst (https://github.com/laurens/glass),
+        extended with MZ-700 and experimental CPU features.
+    </description>
+    
+    <url>https://github.com/mz-700/MZGlass</url>
+	<inceptionYear>2026</inceptionYear>
 	
 	<licenses>
 		<license>
 			<name>Simplified BSD</name>
-			<url>https://github.com/grauw/glass/blob/main/LICENSE</url>
+			<url>https://opensource.org/license/bsd-2-clause</url>
 			<distribution>repo</distribution>
 			<comments>This is a free software license.</comments>
 		</license>
 	</licenses>
 	
-	<organization>
-		<name>Laurens Holst</name>
-		<url>http://www.grauw.nl/</url>
-	</organization>
-	
 	<scm>
-		<connection>scm:git:https://github.com/grauw/glass.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/grauw/glass.git</developerConnection>
-		<url>https://github.com/grauw/glass</url>
+		<connection>scm:git:https://github.com/mz-700/MZGlass.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/mz-700/MZGlass.git</developerConnection>
+		<url>https://github.com/mz-700/MZGlass</url>
 	</scm>
 	
 	<properties>
-		<mainClass>nl.grauw.glass.Assembler</mainClass>
+		<mainClass>org.tbc.glass.Assembler</mainClass>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
    
@@ -52,7 +53,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.9.0</version>
+				<version>3.15.0</version>
 				<configuration>
 					<source>25</source>
 					<target>25</target>
@@ -62,7 +63,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 					<phase>validate</phase>
@@ -79,7 +80,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
+				<version>3.5.0</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -95,7 +96,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
+				<version>3.5.5</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -104,7 +105,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.8.2</version>
+			<version>6.1.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -206,6 +206,99 @@ bytes. A numeric argument overrides the default size, and `size_off` disables th
         ; no explicit size limit
         end_bank
 
+#### `rel`, `endrel`: Relocatable code block
+
+Assembles the enclosed block as relocatable code. The code inside the block
+is resolved as if it starts at address 0, then the assembler emits a small
+wrapper before the actual code:
+
+        jp code_start
+        dw patch_offset1,patch_offset2,...
+    code_start:
+        ; assembled block bytes
+
+The relocation table contains the offsets of 16-bit operands that reference
+labels defined inside the `rel` block. These offsets are relative to the
+start of the actual code, not the start of the wrapper. The values stored in
+the operands are also the block-local label offsets.
+
+        rel
+            ld hl,label1
+            nop
+            ld de,label2
+    label1:
+            nop
+    label2:
+            nop
+            endrel
+
+This emits a jump over the relocation table, then two table entries: the
+offset of the word operand in `ld hl,label1`, and the offset of the word
+operand in `ld de,label2`.
+
+A small relocation routine can use the initial jump target to know where the
+table ends. In this example, `HL` points to the start of the generated `rel`
+block, and `DE` is the address where the actual code bytes will run. The
+routine assumes the actual code bytes have already been copied there.
+
+        ; input:
+        ;   HL = start of generated REL block
+        ;   DE = runtime address of the actual code
+        ;
+        ; patches every word listed in the relocation table by adding DE
+        ; to the block-local value already assembled in the code.
+    RelocateRel:
+        push de
+        pop ix              ; IX = runtime code base
+
+        inc hl              ; skip JP opcode
+        ld c,(hl)
+        inc hl
+        ld b,(hl)           ; BC = offset of actual code
+        inc hl              ; HL = first relocation table entry
+
+        dec bc
+        dec bc
+        dec bc              ; BC = relocation table size in bytes
+
+    RelocateRelLoop:
+        ld a,b
+        or c
+        ret z
+
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        inc hl              ; DE = patch offset, HL = next table entry
+
+        push hl
+        push bc
+
+        push ix
+        pop hl              ; HL = runtime code base
+        add hl,de           ; HL = address of word to patch
+
+        ld e,(hl)
+        inc hl
+        ld d,(hl)           ; DE = block-local word value
+
+        push ix
+        pop bc              ; BC = runtime code base
+        ex de,hl            ; HL = block-local word value, DE = high byte address
+        add hl,bc           ; HL = relocated word value
+
+        ld a,h
+        ld (de),a
+        dec de
+        ld a,l
+        ld (de),a
+
+        pop bc
+        pop hl
+        dec bc
+        dec bc
+        jr RelocateRelLoop
+
 #### `mzf_title`, `mzf_load`, `mzf_start`, `mzf_comments`: MZF output metadata
     
 Specifies metadata for `-O MZF` output.\

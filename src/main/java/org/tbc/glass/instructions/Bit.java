@@ -1,0 +1,47 @@
+package org.tbc.glass.instructions;
+
+import org.tbc.glass.Scope;
+import org.tbc.glass.expressions.Expression;
+import org.tbc.glass.expressions.IntegerLiteral;
+import org.tbc.glass.expressions.Register;
+import org.tbc.glass.expressions.Schema;
+
+public class Bit extends InstructionFactory {
+
+	@Override
+	public InstructionObject createObject(Scope context, Expression arguments) {
+		if (Bit_N_R.ARGUMENTS.check(arguments))
+			return new Bit_N_R(context, arguments.getElement(0), arguments.getElement(1));
+		throw new ArgumentException();
+	}
+
+	public static class Bit_N_R extends InstructionObject {
+
+		public static final Schema ARGUMENTS = new Schema( Schema.DIRECT_N, Schema.DIRECT_R_INDIRECT_HL_IX_IY);
+
+		private final Expression argument1;
+		private final Expression argument2;
+
+		public Bit_N_R(Scope context, Expression argument1, Expression argument2) {
+			super(context);
+			this.argument1 = argument1;
+			this.argument2 = argument2;
+		}
+
+		@Override
+		public Expression getSize() {
+			return indexifyIndirect(argument2.getRegister(), IntegerLiteral.TWO);
+		}
+
+		@Override
+		public byte[] getBytes() {
+			int value = argument1.getInteger();
+			if (value < 0 || value > 7)
+				throw new ArgumentException();
+			Register register = argument2.getRegister();
+			return indexifyOnlyIndirect(register, (byte)0xCB, (byte)(0x40 | value << 3 | register.get8BitCode()));
+		}
+
+	}
+
+}
